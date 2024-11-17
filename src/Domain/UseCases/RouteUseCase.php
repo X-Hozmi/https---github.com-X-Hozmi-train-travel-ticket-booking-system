@@ -24,12 +24,12 @@ class RouteUseCase
         return $this->routeRepository->findById($id);
     }
 
-    public function createRoute(Route $route): Route
+    public function createRoute(Route $route): bool
     {
         return $this->routeRepository->save($route);
     }
 
-    public function updateRoute(Route $route): Route
+    public function updateRoute(Route $route): bool
     {
         return $this->routeRepository->update($route);
     }

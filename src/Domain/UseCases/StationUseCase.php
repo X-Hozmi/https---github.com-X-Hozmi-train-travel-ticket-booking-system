@@ -24,12 +24,12 @@ class StationUseCase
         return $this->routeRepository->findById($id);
     }
 
-    public function createStation(Station $station): Station
+    public function createStation(Station $station): bool
     {
         return $this->routeRepository->save($station);
     }
 
-    public function updateStation(Station $station): Station
+    public function updateStation(Station $station): bool
     {
         return $this->routeRepository->update($station);
     }

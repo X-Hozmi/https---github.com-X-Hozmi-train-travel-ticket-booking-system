@@ -32,31 +32,28 @@ class RouteRepositoryImpl implements RouteRepositoryInterface
 
         if ($data) {
             $route = new Route();
-            $route->id = $data['id'];
+            $route->id = (int)$data['id'];
             $route->source = $data['source'];
             $route->destination = $data['destination'];
-            $route->isDeleted = $data['is_deleted'];
+            $route->isDeleted = (int)$data['is_deleted'];
             return $route;
         }
 
         return null;
     }
 
-    public function save(Route $route): Route
+    public function save(Route $route): bool
     {
         $sql = 'INSERT INTO routes (source, destination) VALUES (?, ?)';
         $stmt = $this->db->prepare($sql);
-        $stmt->execute([$route->source, $route->destination]);
-        $route->id = $this->db->lastInsertId();
-        return $route;
+        return $stmt->execute([$route->source, $route->destination]);
     }
 
-    public function update(Route $route): Route
+    public function update(Route $route): bool
     {
         $sql = 'UPDATE routes SET source = ?, destination = ? WHERE id = ?';
         $stmt = $this->db->prepare($sql);
-        $stmt->execute([$route->source, $route->destination, $route->id]);
-        return $route;
+        return $stmt->execute([$route->source, $route->destination, $route->id]);
     }
 
     public function delete(int $id): bool

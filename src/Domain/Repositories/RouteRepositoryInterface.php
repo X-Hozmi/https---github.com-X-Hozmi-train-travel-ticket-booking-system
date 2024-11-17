@@ -8,7 +8,7 @@ interface RouteRepositoryInterface
 {
     public function show(): array;
     public function findById(int $id): ?Route;
-    public function save(Route $route): Route;
-    public function update(Route $route): Route;
+    public function save(Route $route): bool;
+    public function update(Route $route): bool;
     public function delete(int $id): bool;
 }

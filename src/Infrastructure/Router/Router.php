@@ -7,7 +7,6 @@ use Src\Application\Services\ResponseService;
 class Router
 {
     private array $routes = [];
-    private array $middlewares = [];
 
     public function get(string $path, array $handler, ?string $middleware = null): void
     {

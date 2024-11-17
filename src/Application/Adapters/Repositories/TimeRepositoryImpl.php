@@ -32,31 +32,28 @@ class TimeRepositoryImpl implements TimeRepositoryInterface
 
         if ($data) {
             $time = new Time();
-            $time->id = $data['id'];
+            $time->id = (int)$data['id'];
             $time->arrival = $data['arrival'];
             $time->departure = $data['departure'];
-            $time->isDeleted = $data['is_deleted'];
+            $time->isDeleted = (int)$data['is_deleted'];
             return $time;
         }
 
         return null;
     }
 
-    public function save(Time $time): Time
+    public function save(Time $time): bool
     {
         $sql = 'INSERT INTO times (arrival, departure) VALUES (?, ?)';
         $stmt = $this->db->prepare($sql);
-        $stmt->execute([$time->arrival, $time->departure]);
-        $time->id = $this->db->lastInsertId();
-        return $time;
+        return $stmt->execute([$time->arrival, $time->departure]);
     }
 
-    public function update(Time $time): Time
+    public function update(Time $time): bool
     {
         $sql = 'UPDATE times SET arrival = ?, departure = ? WHERE id = ?';
         $stmt = $this->db->prepare($sql);
-        $stmt->execute([$time->arrival, $time->departure, $time->id]);
-        return $time;
+        return $stmt->execute([$time->arrival, $time->departure, $time->id]);
     }
 
     public function delete(int $id): bool

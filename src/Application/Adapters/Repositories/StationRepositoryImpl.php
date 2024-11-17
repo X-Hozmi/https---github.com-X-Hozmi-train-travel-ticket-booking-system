@@ -32,44 +32,41 @@ class StationRepositoryImpl implements StationRepositoryInterface
 
         if ($data) {
             $station = new Station();
-            $station->id = $data['id'];
+            $station->id = (int)$data['id'];
             $station->code = $data['code'];
             $station->name = $data['name'];
             $station->city = $data['city'];
             $station->cityName = $data['city_name'];
-            $station->isDeleted = $data['is_deleted'];
+            $station->isDeleted = (int)$data['is_deleted'];
             return $station;
         }
 
         return null;
     }
 
-    public function save(Station $station): Station
+    public function save(Station $station): bool
     {
         $sql = 'INSERT INTO stations (code, name, city, city_name) VALUES (?, ?, ?, ?)';
         $stmt = $this->db->prepare($sql);
-        $stmt->execute([
+        return $stmt->execute([
             $station->code,
             $station->name,
             $station->city,
             $station->cityName,
         ]);
-        $station->id = $this->db->lastInsertId();
-        return $station;
     }
 
-    public function update(Station $station): Station
+    public function update(Station $station): bool
     {
         $sql = 'UPDATE stations SET code = ?, name = ?, city = ?, city_name = ? WHERE id = ?';
         $stmt = $this->db->prepare($sql);
-        $stmt->execute([
+        return $stmt->execute([
             $station->code,
             $station->name,
             $station->city,
             $station->cityName,
             $station->id,
         ]);
-        return $station;
     }
 
     public function delete(int $id): bool

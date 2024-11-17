@@ -24,12 +24,12 @@ class TimeUseCase
         return $this->routeRepository->findById($id);
     }
 
-    public function createTime(Time $time): Time
+    public function createTime(Time $time): bool
     {
         return $this->routeRepository->save($time);
     }
 
-    public function updateTime(Time $time): Time
+    public function updateTime(Time $time): bool
     {
         return $this->routeRepository->update($time);
     }

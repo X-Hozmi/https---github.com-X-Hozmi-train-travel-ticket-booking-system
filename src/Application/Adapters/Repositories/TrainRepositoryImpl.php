@@ -32,28 +32,28 @@ class TrainRepositoryImpl implements TrainRepositoryInterface
 
         if ($data) {
             $train = new Train();
-            $train->id = $data['id'];
-            $train->routeId = $data['route_id'];
-            $train->timeId = $data['time_id'];
+            $train->id = (int)$data['id'];
+            $train->routeId = (int)$data['route_id'];
+            $train->timeId = (int)$data['time_id'];
             $train->name = $data['name'];
             $train->class = $data['class'];
-            $train->capacity = $data['capacity'];
-            $train->carriages = $data['carriages'];
+            $train->capacity = (int)$data['capacity'];
+            $train->carriages = (int)$data['carriages'];
             $train->price = $data['price'];
             $train->status = $data['status'];
-            $train->isDeleted = $data['is_deleted'];
+            $train->isDeleted = (int)$data['is_deleted'];
             return $train;
         }
 
         return null;
     }
 
-    public function save(Train $train): Train
+    public function save(Train $train): bool
     {
         $sql = 'INSERT INTO trains (route_id, time_id, name, class, capacity, carriages, price, status) 
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
         $stmt = $this->db->prepare($sql);
-        $stmt->execute([
+        return $stmt->execute([
             $train->routeId,
             $train->timeId,
             $train->name,
@@ -63,16 +63,14 @@ class TrainRepositoryImpl implements TrainRepositoryInterface
             $train->price,
             $train->status,
         ]);
-        $train->id = $this->db->lastInsertId();
-        return $train;
     }
 
-    public function update(Train $train): Train
+    public function update(Train $train): bool
     {
         $sql = 'UPDATE trains SET route_id = ?, time_id = ?, name = ?, class = ?, 
                 capacity = ?, carriages = ?, price = ?, status = ? WHERE id = ?';
         $stmt = $this->db->prepare($sql);
-        $stmt->execute([
+        return $stmt->execute([
             $train->routeId,
             $train->timeId,
             $train->name,
@@ -83,7 +81,6 @@ class TrainRepositoryImpl implements TrainRepositoryInterface
             $train->status,
             $train->id,
         ]);
-        return $train;
     }
 
     public function delete(int $id): bool

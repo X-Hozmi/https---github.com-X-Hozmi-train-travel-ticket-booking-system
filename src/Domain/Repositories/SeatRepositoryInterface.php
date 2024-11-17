@@ -8,7 +8,7 @@ interface SeatRepositoryInterface
 {
     public function show(): array;
     public function findById(int $id): ?Seat;
-    public function save(Seat $seat): Seat;
-    public function update(Seat $seat): Seat;
+    public function save(Seat $seat): bool;
+    public function update(Seat $seat): bool;
     public function delete(int $id): bool;
 }

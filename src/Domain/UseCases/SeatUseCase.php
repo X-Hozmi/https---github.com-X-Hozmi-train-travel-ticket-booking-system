@@ -24,12 +24,12 @@ class SeatUseCase
         return $this->routeRepository->findById($id);
     }
 
-    public function createSeat(Seat $seat): Seat
+    public function createSeat(Seat $seat): bool
     {
         return $this->routeRepository->save($seat);
     }
 
-    public function updateSeat(Seat $seat): Seat
+    public function updateSeat(Seat $seat): bool
     {
         return $this->routeRepository->update($seat);
     }

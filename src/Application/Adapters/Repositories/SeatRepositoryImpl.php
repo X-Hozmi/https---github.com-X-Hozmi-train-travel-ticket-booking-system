@@ -32,41 +32,39 @@ class SeatRepositoryImpl implements SeatRepositoryInterface
 
         if ($data) {
             $seat = new Seat();
-            $seat->id = $data['id'];
-            $seat->trainId = $data['train_id'];
-            $seat->carriageNumber = $data['carriage_number'];
-            $seat->seatNumber = $data['seat_number'];
+            $seat->id = (int)$data['id'];
+            $seat->trainId = (int)$data['train_id'];
+            $seat->carriageNumber = (int)$data['carriage_number'];
+            $seat->seatNumber = (string)$data['seat_number'];
             $seat->seatType = $data['seat_type'];
-            $seat->isAvailable = $data['is_available'];
-            $seat->isDeleted = $data['is_deleted'];
+            $seat->isAvailable = (int)$data['is_available'];
+            $seat->isDeleted = (int)$data['is_deleted'];
             return $seat;
         }
 
         return null;
     }
 
-    public function save(Seat $seat): Seat
+    public function save(Seat $seat): bool
     {
         $sql = 'INSERT INTO seats (train_id, carriage_number, seat_number, seat_type, is_available) 
                 VALUES (?, ?, ?, ?, ?)';
         $stmt = $this->db->prepare($sql);
-        $stmt->execute([
+        return $stmt->execute([
             $seat->trainId,
             $seat->carriageNumber,
             $seat->seatNumber,
             $seat->seatType,
             $seat->isAvailable,
         ]);
-        $seat->id = $this->db->lastInsertId();
-        return $seat;
     }
 
-    public function update(Seat $seat): Seat
+    public function update(Seat $seat): bool
     {
         $sql = 'UPDATE seats SET train_id = ?, carriage_number = ?, seat_number = ?, 
                 seat_type = ?, is_available = ? WHERE id = ?';
         $stmt = $this->db->prepare($sql);
-        $stmt->execute([
+        return $stmt->execute([
             $seat->trainId,
             $seat->carriageNumber,
             $seat->seatNumber,
@@ -74,7 +72,6 @@ class SeatRepositoryImpl implements SeatRepositoryInterface
             $seat->isAvailable,
             $seat->id,
         ]);
-        return $seat;
     }
 
     public function delete(int $id): bool

@@ -32,13 +32,13 @@ class PaymentRepositoryImpl implements PaymentRepositoryInterface
 
         if ($data) {
             $payment = new Payment();
-            $payment->id = $data['id'];
-            $payment->orderId = $data['order_id'];
+            $payment->id = (int)$data['id'];
+            $payment->orderId = (int)$data['order_id'];
             $payment->amount = $data['amount'];
             $payment->paymentMethod = $data['payment_method'];
             $payment->transactionId = $data['transaction_id'];
             $payment->status = $data['status'];
-            $payment->isDeleted = $data['is_deleted'];
+            $payment->isDeleted = (int)$data['is_deleted'];
             return $payment;
         }
 

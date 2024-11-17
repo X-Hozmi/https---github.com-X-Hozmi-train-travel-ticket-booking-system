@@ -57,9 +57,9 @@ class OrderController
             $order->totalAmount = $data['total_amount'];
             $order->status = $data['status'] ?? 'pending';
 
-            $result = $this->orderUseCase->createOrder($order);
+            $this->orderUseCase->createOrder($order);
 
-            ResponseService::created($result);
+            ResponseService::created();
         } catch (\Exception $e) {
             ResponseService::error($e->getMessage());
         }
@@ -83,9 +83,9 @@ class OrderController
             $order->totalAmount = $data['total_amount'] ?? $order->totalAmount;
             $order->status = $data['status'] ?? $order->status;
 
-            $result = $this->orderUseCase->updateOrder($order);
+            $this->orderUseCase->updateOrder($order);
 
-            ResponseService::success($result);
+            ResponseService::success();
         } catch (\Exception $e) {
             ResponseService::error($e->getMessage());
         }
@@ -100,7 +100,7 @@ class OrderController
                 throw new \Exception('Failed to delete order');
             }
 
-            ResponseService::success($result, $message = 'Order deleted successfully');
+            ResponseService::success([], $message = 'Order deleted successfully');
         } catch (\Exception $e) {
             ResponseService::error($e->getMessage());
         }

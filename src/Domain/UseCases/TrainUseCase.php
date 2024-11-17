@@ -24,12 +24,12 @@ class TrainUseCase
         return $this->trainRepository->findById($id);
     }
 
-    public function createTrain(Train $train): Train
+    public function createTrain(Train $train): bool
     {
         return $this->trainRepository->save($train);
     }
 
-    public function updateTrain(Train $train): Train
+    public function updateTrain(Train $train): bool
     {
         return $this->trainRepository->update($train);
     }

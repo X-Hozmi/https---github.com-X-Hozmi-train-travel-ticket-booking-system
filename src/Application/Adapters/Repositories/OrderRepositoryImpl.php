@@ -32,15 +32,15 @@ class OrderRepositoryImpl implements OrderRepositoryInterface
 
         if ($data) {
             $order = new Order();
-            $order->id = $data['id'];
-            $order->userId = $data['user_id'];
-            $order->trainId = $data['train_id'];
-            $order->seatId = $data['seat_id'];
-            $order->adultPassenger = $data['adult_passenger'];
-            $order->childPassenger = $data['child_passenger'];
+            $order->id = (int)$data['id'];
+            $order->userId = (int)$data['user_id'];
+            $order->trainId = (int)$data['train_id'];
+            $order->seatId = (int)$data['seat_id'];
+            $order->adultPassenger = (int)$data['adult_passenger'];
+            $order->childPassenger = (int)$data['child_passenger'];
             $order->status = $data['status'];
             $order->totalAmount = $data['total_amount'];
-            $order->isDeleted = $data['is_deleted'];
+            $order->isDeleted = (int)$data['is_deleted'];
             return $order;
         }
 

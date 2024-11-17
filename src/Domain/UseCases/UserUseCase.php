@@ -24,7 +24,7 @@ class UserUseCase
         return $this->orderRepository->findById($id);
     }
 
-    public function updateUser(User $order): User
+    public function updateUser(User $order): bool
     {
         return $this->orderRepository->update($order);
     }

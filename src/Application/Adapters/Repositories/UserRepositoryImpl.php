@@ -32,13 +32,13 @@ class UserRepositoryImpl implements UserRepositoryInterface
 
         if ($data) {
             $user = new User();
-            $user->id = $data['id'];
-            $user->idNumber = $data['id_number'];
+            $user->id = (int)$data['id'];
+            $user->idNumber = (int)$data['id_number'];
             $user->name = $data['name'];
             $user->username = $data['username'];
             $user->email = $data['email'];
             $user->role = $data['role'];
-            $user->isDeleted = $data['is_deleted'];
+            $user->isDeleted = (int)$data['is_deleted'];
             return $user;
         }
 
@@ -54,25 +54,25 @@ class UserRepositoryImpl implements UserRepositoryInterface
 
         if ($data) {
             $user = new User();
-            $user->id = $data['id'];
-            $user->idNumber = $data['id_number'];
+            $user->id = (int)$data['id'];
+            $user->idNumber = (int)$data['id_number'];
             $user->name = $data['name'];
             $user->username = $data['username'];
             $user->email = $data['email'];
             $user->role = $data['role'];
-            $user->isDeleted = $data['is_deleted'];
+            $user->isDeleted = (int)$data['is_deleted'];
             return $user;
         }
 
         return null;
     }
 
-    public function save(User $user): User
+    public function save(User $user): bool
     {
         $sql = 'INSERT INTO users (id_number, name, username, email, password, role) 
                 VALUES (?, ?, ?, ?, ?, ?)';
         $stmt = $this->db->prepare($sql);
-        $stmt->execute([
+        return $stmt->execute([
             $user->idNumber,
             $user->name,
             $user->username,
@@ -80,8 +80,6 @@ class UserRepositoryImpl implements UserRepositoryInterface
             password_hash($user->password, PASSWORD_DEFAULT),
             $user->role,
         ]);
-        $user->id = $this->db->lastInsertId();
-        return $user;
     }
 
     public function login(string $username, string $password)
@@ -98,11 +96,11 @@ class UserRepositoryImpl implements UserRepositoryInterface
         return null;
     }
 
-    public function update(User $user): User
+    public function update(User $user): bool
     {
         $sql = 'UPDATE users SET id_number = ?, name = ?, email = ?, password = ?, role = ? WHERE id = ?';
         $stmt = $this->db->prepare($sql);
-        $stmt->execute([
+        return $stmt->execute([
             $user->idNumber,
             $user->name,
             $user->email,
@@ -110,7 +108,6 @@ class UserRepositoryImpl implements UserRepositoryInterface
             $user->role,
             $user->id,
         ]);
-        return $user;
     }
 
     public function delete(int $id): bool
