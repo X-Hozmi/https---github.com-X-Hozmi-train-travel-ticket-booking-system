@@ -1,0 +1,580 @@
+{
+	"info": {
+		"_postman_id": "a284aa7e-6808-4fee-9b95-39f34d8faf2e",
+		"name": "Pemrograman Web 1 - UAS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25121300"
+	},
+	"item": [
+		{
+			"name": "Registration",
+			"item": [
+				{
+					"name": "Add User with Valid Payload",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should response 201 status code', () => {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test('should response with correct property and message', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson).to.be.an('object');\r",
+									"    pm.expect(responseJson.status).to.be.a('string');\r",
+									"    pm.expect(responseJson.status).to.equal('success');\r",
+									"    pm.expect(responseJson.message).to.equal('Successfully registered');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{newName}}\",\r\n    \"id_number\": \"{{newIdNumber}}\",\r\n    \"username\": \"{{newUsername}}\",\r\n    \"email\": \"{{newEmail}}\",\r\n    \"password\": \"{{newPassword}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}:{{port}}{{uri}}/api/auth/register",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}{{uri}}",
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "[No Test] Prerequiresite",
+					"item": [
+						{
+							"name": "Add User",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"{{newName}}\",\r\n    \"id_number\": \"{{newIdNumber}}\",\r\n    \"username\": \"{{newUsername}}\",\r\n    \"email\": \"{{newEmail}}\",\r\n    \"password\": \"{{newPassword}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{protocol}}://{{host}}:{{port}}{{uri}}/api/auth/register",
+									"protocol": "{{protocol}}",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}{{uri}}",
+									"path": [
+										"api",
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Login with Valid Payload",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should response 200 status code', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('should respose with correct property and message', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson).to.be.an('object');\r",
+									"    pm.expect(responseJson.status).to.be.a('string');\r",
+									"    pm.expect(responseJson.status).to.equal('success');\r",
+									"    pm.expect(responseJson.message).to.equal('Success');\r",
+									"    pm.expect(responseJson.data).to.be.an('object');\r",
+									"    pm.expect(responseJson.data.access_token).to.be.a('string');\r",
+									"    pm.expect(responseJson.data.refresh_token).to.be.a('string');\r",
+									"    pm.expect(responseJson.data.user).to.be.an('object');\r",
+									"    pm.expect(responseJson.data.user.id).to.be.a('number');\r",
+									"    pm.expect(responseJson.data.user.username).to.be.a('string');\r",
+									"    pm.expect(responseJson.data.user.role).to.be.a('string');\r",
+									"\r",
+									"    pm.environment.set('accessToken', responseJson.data.access_token);\r",
+									"    pm.environment.set('refreshToken', responseJson.data.refresh_token);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{newUsername}}\",\r\n    \"password\": \"{{newPassword}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}:{{port}}{{uri}}/api/auth/login",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}{{uri}}",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Access Token with Valid Refresh Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should response 200 status code', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('should respose with correct property and message', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson).to.be.an('object');\r",
+									"    pm.expect(responseJson.status).to.be.a('string');\r",
+									"    pm.expect(responseJson.status).to.equal('success');\r",
+									"    pm.expect(responseJson.message).to.equal('Refresh token return successfully');\r",
+									"    pm.expect(responseJson.data).to.be.an('object');\r",
+									"    pm.expect(responseJson.data.access_token).to.be.a('string');\r",
+									"    pm.expect(responseJson.data.user).to.be.an('object');\r",
+									"    pm.expect(responseJson.data.user.id).to.be.a('number');\r",
+									"    pm.expect(responseJson.data.user.username).to.be.a('string');\r",
+									"    pm.expect(responseJson.data.user.role).to.be.a('string');\r",
+									"\r",
+									"    pm.environment.set('accessToken', responseJson.data.access_token);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"refresh_token\": \"{{refreshToken}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}:{{port}}{{uri}}/api/auth/refresh",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}{{uri}}",
+							"path": [
+								"api",
+								"auth",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout with Valid Access Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should response 200 status code', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('should respose with correct property and message', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson).to.be.an('object');\r",
+									"    pm.expect(responseJson.status).to.be.a('string');\r",
+									"    pm.expect(responseJson.status).to.equal('success');\r",
+									"    pm.expect(responseJson.message).to.equal('Successfully logged out');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}://{{host}}:{{port}}{{uri}}/api/auth/logout",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}{{uri}}",
+							"path": [
+								"api",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Datas",
+			"item": [
+				{
+					"name": "User Datas",
+					"item": [
+						{
+							"name": "Get Users",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should respond with a 200 status code', () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test('should respond with correct properties and message', () => {\r",
+											"    const responseJson = pm.response.json();\r",
+											"\r",
+											"    pm.expect(responseJson).to.be.an('object');\r",
+											"    pm.expect(responseJson.status).to.be.a('string').and.to.equal('success');\r",
+											"    pm.expect(responseJson.message).to.be.a('string').and.to.equal('Success');\r",
+											"    pm.expect(responseJson.data).to.be.an('object');\r",
+											"\r",
+											"    pm.test('data.user key should exist and be an array', () => {\r",
+											"        pm.expect(responseJson.data).to.have.property('user');\r",
+											"        const user = responseJson.data.user;\r",
+											"\r",
+											"        if (Array.isArray(user) && user.length === 0) {\r",
+											"            pm.test('user is an empty array', () => {\r",
+											"                pm.expect(user).to.be.an('array').that.is.empty;\r",
+											"            });\r",
+											"        } else {\r",
+											"            pm.test('user is a non-empty array with correct keys and types', () => {\r",
+											"                pm.expect(user).to.be.an('array').that.is.not.empty;\r",
+											"\r",
+											"                user.forEach((item) => {\r",
+											"                    pm.expect(item).to.be.an('object').and.to.have.all.keys(\r",
+											"                        'id',\r",
+											"                        'id_number',\r",
+											"                        'name',\r",
+											"                        'username',\r",
+											"                        'email',\r",
+											"                        'role',\r",
+											"                        'is_deleted'\r",
+											"                    );\r",
+											"\r",
+											"                    pm.expect(item.id).to.be.a('number');\r",
+											"                    pm.expect(item.id_number).to.satisfy(\r",
+											"                        (val) => val === null || typeof val === 'number',\r",
+											"                        'id_number should be null or a number'\r",
+											"                    );\r",
+											"                    pm.expect(item.name).to.be.a('string');\r",
+											"                    pm.expect(item.username).to.be.a('string');\r",
+											"                    pm.expect(item.email).to.be.a('string');\r",
+											"                    pm.expect(item.role).to.be.a('string');\r",
+											"                    pm.expect(item.is_deleted).to.be.a('number');\r",
+											"                });\r",
+											"            });\r",
+											"        }\r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{accessToken}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{protocol}}://{{host}}:{{port}}{{uri}}/api/users",
+									"protocol": "{{protocol}}",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}{{uri}}",
+									"path": [
+										"api",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get User By ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should respond with a 200 status code', () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test('should respond with correct properties and message', () => {\r",
+											"    const responseJson = pm.response.json();\r",
+											"\r",
+											"    pm.expect(responseJson).to.be.an('object');\r",
+											"    pm.expect(responseJson.status).to.be.a('string').and.to.equal('success');\r",
+											"    pm.expect(responseJson.message).to.be.a('string').and.to.equal('Success');\r",
+											"    pm.expect(responseJson.data).to.be.an('object');\r",
+											"    pm.expect(responseJson.data.id).to.be.a('number');\r",
+											"    pm.expect(responseJson.data.idNumber).to.satisfy(\r",
+											"        (val) => val === null || typeof val === 'number',\r",
+											"        'idNumber should be null or a number'\r",
+											"    );\r",
+											"    pm.expect(responseJson.data.name).to.be.a('string');\r",
+											"    pm.expect(responseJson.data.username).to.be.a('string');\r",
+											"    pm.expect(responseJson.data.email).to.be.a('string');\r",
+											"    pm.expect(responseJson.data.role).to.be.a('string');\r",
+											"    pm.expect(responseJson.data.isDeleted).to.be.a('number');\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{accessToken}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{protocol}}://{{host}}:{{port}}{{uri}}/api/users/{{newUserID}}",
+									"protocol": "{{protocol}}",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}{{uri}}",
+									"path": [
+										"api",
+										"users",
+										"{{newUserID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should respond with a 200 status code', () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test('should respond with correct properties and message', () => {\r",
+											"    const responseJson = pm.response.json();\r",
+											"\r",
+											"    pm.expect(responseJson).to.be.an('object');\r",
+											"    pm.expect(responseJson.status).to.be.a('string').and.to.equal('success');\r",
+											"    pm.expect(responseJson.message).to.be.a('string').and.to.equal('Update Success');\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{accessToken}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id_number\": 1234567890,\r\n    \"name\": \"New Admin\",\r\n    \"email\": \"newAdmin.email@email.com\",\r\n    \"password\": \"newPassword\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{protocol}}://{{host}}:{{port}}{{uri}}/api/users/{{newUserID}}",
+									"protocol": "{{protocol}}",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}{{uri}}",
+									"path": [
+										"api",
+										"users",
+										"{{newUserID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should respond with a 200 status code', () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test('should respond with correct properties and message', () => {\r",
+											"    const responseJson = pm.response.json();\r",
+											"\r",
+											"    pm.expect(responseJson).to.be.an('object');\r",
+											"    pm.expect(responseJson.status).to.be.a('string').and.to.equal('success');\r",
+											"    pm.expect(responseJson.message).to.be.a('string').and.to.equal('User deleted successfully');\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{accessToken}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{protocol}}://{{host}}:{{port}}{{uri}}/api/users/{{newUserID}}",
+									"protocol": "{{protocol}}",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}{{uri}}",
+									"path": [
+										"api",
+										"users",
+										"{{newUserID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}

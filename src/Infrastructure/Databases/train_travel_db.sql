@@ -1,18 +1,3 @@
-/*
- Navicat Premium Data Transfer
- 
- Source Server         : Localhost
- Source Server Type    : MySQL
- Source Server Version : 80039 (8.0.39)
- Source Host           : localhost:3306
- Source Schema         : train_travel_db
- 
- Target Server Type    : MySQL
- Target Server Version : 80039 (8.0.39)
- File Encoding         : 65001
- 
- Date: 10/11/2024 20:35:55
- */
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
@@ -21,12 +6,16 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int NOT NULL AUTO_INCREMENT,
+  `id_number` int NULL DEFAULT NULL,
+  `name` varchar(255) NULL DEFAULT NULL,
   `username` varchar(50) NOT NULL,
   `email` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
   `role` enum('admin', 'staff', 'client') NULL DEFAULT 'client',
+  `is_deleted` tinyint NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `refresh_token` text NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `email`(`email` ASC) USING BTREE,
   UNIQUE INDEX `idx_email`(`email` ASC) USING BTREE
@@ -37,13 +26,51 @@ CREATE TABLE `users` (
 INSERT INTO `users`
 VALUES (
     1,
+    1234567890,
+    'New Admin',
     'admin',
-    'admin@train.com',
-    '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
+    'newAdmin.email@email.com',
+    '$2y$10$PoMHXX4wUlIjZET/KAP1ROcsScCoUc.nS2veEtO2FnGVLNfkl9AOW',
     'admin',
+    0,
     '2024-11-09 20:22:04',
-    '2024-11-09 20:22:04'
+    '2024-11-17 19:03:22',
+    NULL
   );
+INSERT INTO `users`
+VALUES (
+    4,
+    123456789,
+    'Jane Doe',
+    'janedoe',
+    'jane.doe@email.com',
+    '$2y$10$aCONcckUNysw1.yxWRmPcu1wsqu93Jzq2IHylrCFDmA3KPPJSXhxS',
+    'client',
+    0,
+    '2024-11-17 16:52:12',
+    '2024-11-17 18:27:22',
+    'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0LCJpYXQiOjE3MzE4NDI4NDIsImV4cCI6MTczNDQzNDg0MiwidHlwZSI6InJlZnJlc2gifQ.txDdJy_9W4GS1OTQgP1uiNUkROEJr9AO6z5bHLSlpQg'
+  );
+-- ----------------------------
+-- Table structure for routes
+-- ----------------------------
+DROP TABLE IF EXISTS `routes`;
+CREATE TABLE `routes` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `source` varchar(255) NULL DEFAULT NULL,
+  `destination` varchar(255) NULL DEFAULT NULL,
+  `is_deleted` tinyint NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+-- ----------------------------
+-- Records of routes
+-- ----------------------------
+INSERT INTO `routes`
+VALUES (1, 'PASARSENEN', 'JATINEGARA', 0, NULL, NULL);
+INSERT INTO `routes`
+VALUES (2, 'JATINEGARA', 'PASARSENEN', 0, NULL, NULL);
 -- ----------------------------
 -- Table structure for stations
 -- ----------------------------
@@ -53,9 +80,12 @@ CREATE TABLE `stations` (
   `code` varchar(512) NULL DEFAULT NULL,
   `name` varchar(512) NULL DEFAULT NULL,
   `city` varchar(512) NULL DEFAULT NULL,
-  `cityname` varchar(512) NULL DEFAULT NULL,
+  `city_name` varchar(512) NULL DEFAULT NULL,
+  `is_deleted` tinyint NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE
-);
+) ENGINE = InnoDB AUTO_INCREMENT = 209 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 -- ----------------------------
 -- Records of stations
 -- ----------------------------
@@ -65,7 +95,10 @@ VALUES (
     'TNK',
     'TANJUNG KARANG',
     'TANJUNG KARANG',
-    'KOTA BANDAR LAMPUNG'
+    'KOTA BANDAR LAMPUNG',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -73,7 +106,10 @@ VALUES (
     'LAR',
     'LABUAN RATU',
     'LABUAN RATU',
-    'KOTA BANDAR LAMPUNG'
+    'KOTA BANDAR LAMPUNG',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -81,7 +117,10 @@ VALUES (
     'RJS',
     'REJOSARI',
     'REJOSARI',
-    'KABUPATEN LAMPUNG SELATAN'
+    'KABUPATEN LAMPUNG SELATAN',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -89,7 +128,10 @@ VALUES (
     'TGI',
     'TEGINENENG',
     'TEGINENENG',
-    'KABUPATEN LAMPUNG UTARA'
+    'KABUPATEN LAMPUNG UTARA',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -97,7 +139,10 @@ VALUES (
     'BKI',
     'BEKRI',
     'BEKRI',
-    'KABUPATEN LAMPUNG TENGAH'
+    'KABUPATEN LAMPUNG TENGAH',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -105,7 +150,10 @@ VALUES (
     'HJP',
     'HAJI PEMANGGILAN',
     'HAJI PEMANGGILAN',
-    'KABUPATEN LAMPUNG TENGAH'
+    'KABUPATEN LAMPUNG TENGAH',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -113,17 +161,32 @@ VALUES (
     'SLS',
     'SULUSUBAN',
     'SULUSUBAN',
-    'KABUPATEN LAMPUNG TENGAH'
+    'KABUPATEN LAMPUNG TENGAH',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
-VALUES (8, 'KB', 'KOTABUMI', 'KOTABUMI', 'KOTABUMI');
+VALUES (
+    8,
+    'KB',
+    'KOTABUMI',
+    'KOTABUMI',
+    'KOTABUMI',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
 VALUES (
     9,
     'CEP',
     'CEMPAKA',
     'CEMPAKA',
-    'KABUPATEN LAMPUNG UTARA'
+    'KABUPATEN LAMPUNG UTARA',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -131,7 +194,10 @@ VALUES (
     'KTP',
     'KETAPANG',
     'KETAPANG',
-    'KABUPATEN LAMPUNG UTARA'
+    'KABUPATEN LAMPUNG UTARA',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -139,7 +205,10 @@ VALUES (
     'NRR',
     'NEGARA RATU',
     'NEGARA RATU',
-    'KABUPATEN LAMPUNG UTARA'
+    'KABUPATEN LAMPUNG UTARA',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -147,7 +216,10 @@ VALUES (
     'TLY',
     'TULUNG BUYUT',
     'TULUNG BUYUT',
-    'KABUPATEN LAMPUNG UTARA'
+    'KABUPATEN LAMPUNG UTARA',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -155,7 +227,10 @@ VALUES (
     'NGN',
     'NEGERIAGUNG',
     'NEGERIAGUNG',
-    'KABUPATEN WAY KANAN'
+    'KABUPATEN WAY KANAN',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -163,7 +238,10 @@ VALUES (
     'BBU',
     'BLAMBANGAN UMPU',
     'BLAMBANGAN UMPU',
-    'KABUPATEN WAY KANAN'
+    'KABUPATEN WAY KANAN',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -171,7 +249,10 @@ VALUES (
     'GHM',
     'GIHAM',
     'GIHAM',
-    'KABUPATEN WAY KANAN'
+    'KABUPATEN WAY KANAN',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -179,17 +260,32 @@ VALUES (
     'WAY',
     'WAYTUBA',
     'WAYTUBA',
-    'KABUPATEN WAY KANAN'
+    'KABUPATEN WAY KANAN',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
-VALUES (17, 'MP', 'MARTAPURA', 'MARTAPURA', 'MARTAPURA');
+VALUES (
+    17,
+    'MP',
+    'MARTAPURA',
+    'MARTAPURA',
+    'MARTAPURA',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
 VALUES (
     18,
     'PNW',
     'PENINJAWAN',
     'PENINJAWAN',
-    'PENINJAWAN'
+    'PENINJAWAN',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -197,7 +293,10 @@ VALUES (
     'KOP',
     'KOTA PADANG',
     'KOTA PADANG',
-    'KABUPATEN MUARA ENIM'
+    'KABUPATEN MUARA ENIM',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -205,17 +304,32 @@ VALUES (
     'TI',
     'TEBING TINGGI',
     'TEBING TINGGI',
-    'KABUPATEN EMPAT LAWANG'
+    'KABUPATEN EMPAT LAWANG',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
-VALUES (21, 'LT', 'LAHAT', 'LAHAT', 'KABUPATEN LAHAT');
+VALUES (
+    21,
+    'LT',
+    'LAHAT',
+    'LAHAT',
+    'KABUPATEN LAHAT',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
 VALUES (
     22,
     'SCT',
     'SUKACINTA',
     'SUKACINTA',
-    'KABUPATEN LAHAT'
+    'KABUPATEN LAHAT',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -223,7 +337,10 @@ VALUES (
     'ME',
     'MUARA ENIM',
     'MUARA ENIM',
-    'KABUPATEN MUARA ENIM'
+    'KABUPATEN MUARA ENIM',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -231,7 +348,10 @@ VALUES (
     'PBM',
     'PRABUMULIH',
     'PRABUMULIH',
-    'KOTA PRABUMULIH'
+    'KOTA PRABUMULIH',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -239,7 +359,10 @@ VALUES (
     'GB',
     'GOMBONG',
     'GOMBONG',
-    'KABUPATEN KEBUMEN'
+    'KABUPATEN KEBUMEN',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -247,7 +370,10 @@ VALUES (
     'KPT',
     'KERTAPATI',
     'KERTAPATI',
-    'KOTA PALEMBANG'
+    'KOTA PALEMBANG',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -255,27 +381,54 @@ VALUES (
     'LLG',
     'LUBUK LINGGAU',
     'LUBUK LINGGAU',
-    'KOTA LUBUKLINGGAU'
+    'KOTA LUBUKLINGGAU',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
-VALUES (28, 'BTA', 'BATURAJA', 'BATURAJA', 'BATURAJA');
+VALUES (
+    28,
+    'BTA',
+    'BATURAJA',
+    'BATURAJA',
+    'BATURAJA',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
 VALUES (
     29,
     'MRI',
     'MANGGARAI',
     'MANGGARAI',
-    'KOTA JAKARTA PUSAT'
+    'KOTA JAKARTA PUSAT',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
-VALUES (30, 'GMR', 'GAMBIR', 'GAMBIR', 'JAKARTA');
+VALUES (
+    30,
+    'GMR',
+    'GAMBIR',
+    'GAMBIR',
+    'JAKARTA',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
 VALUES (
     31,
     'JUA',
     'JUANDA',
     'JUANDA',
-    'KOTA JAKARTA PUSAT'
+    'KOTA JAKARTA PUSAT',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -283,7 +436,10 @@ VALUES (
     'JAKK',
     'JAKARTA KOTA',
     'JAKARTA KOTA',
-    'JAKARTA'
+    'JAKARTA',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -291,17 +447,32 @@ VALUES (
     'TGS',
     'TIGARAKSA',
     'TIGARAKSA',
-    'KABUPATEN TANGERANG'
+    'KABUPATEN TANGERANG',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
-VALUES (34, 'CLG', 'CILEGON', 'CILEGON', 'KOTA CILEGON');
+VALUES (
+    34,
+    'CLG',
+    'CILEGON',
+    'CILEGON',
+    'KOTA CILEGON',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
 VALUES (
     35,
     'KNN',
     'KRADENAN',
     'KRADENAN',
-    'KABUPATEN GROBOGAN'
+    'KABUPATEN GROBOGAN',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -309,43 +480,109 @@ VALUES (
     'JBN',
     'JAMBON',
     'JAMBON',
-    'KABUPATEN GROBOGAN'
+    'KABUPATEN GROBOGAN',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
-VALUES (37, 'LW', 'LAWANG', 'LAWANG', 'KOTA MALANG');
+VALUES (
+    37,
+    'LW',
+    'LAWANG',
+    'LAWANG',
+    'KOTA MALANG',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
-VALUES (38, 'ML', 'MALANG', 'MALANG', 'KOTA MALANG');
+VALUES (
+    38,
+    'ML',
+    'MALANG',
+    'MALANG',
+    'KOTA MALANG',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
 VALUES (
     39,
     'MLK',
     'MALANG KOTA LAMA',
     'MALANG KOTA LAMA',
-    'KOTA MALANG'
+    'KOTA MALANG',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
-VALUES (40, 'KPN', 'KEPANJEN', 'KEPANJEN', 'KOTA MALANG');
+VALUES (
+    40,
+    'KPN',
+    'KEPANJEN',
+    'KEPANJEN',
+    'KOTA MALANG',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
 VALUES (
     41,
     'SBP',
     'SUMBERPUCUNG',
     'SUMBERPUCUNG',
-    'KOTA MALANG'
+    'KOTA MALANG',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
-VALUES (42, 'KSB', 'KESAMBEN', 'KESAMBEN', 'KOTA BLITAR');
+VALUES (
+    42,
+    'KSB',
+    'KESAMBEN',
+    'KESAMBEN',
+    'KOTA BLITAR',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
-VALUES (43, 'WG', 'WLINGI', 'WLINGI', 'KOTA BLITAR');
+VALUES (
+    43,
+    'WG',
+    'WLINGI',
+    'WLINGI',
+    'KOTA BLITAR',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
-VALUES (44, 'BL', 'BLITAR', 'BLITAR', 'KOTA BLITAR');
+VALUES (
+    44,
+    'BL',
+    'BLITAR',
+    'BLITAR',
+    'KOTA BLITAR',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
 VALUES (
     45,
     'NT',
     'NGUNUT',
     'NGUNUT',
-    'KABUPATEN TULUNGAGUNG'
+    'KABUPATEN TULUNGAGUNG',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -353,7 +590,10 @@ VALUES (
     'TA',
     'TULUNGAGUNG',
     'TULUNGAGUNG',
-    'KABUPATEN TULUNGAGUNG'
+    'KABUPATEN TULUNGAGUNG',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -361,29 +601,65 @@ VALUES (
     'NJG',
     'NGUJANG',
     'NGUJANG',
-    'KABUPATEN TULUNGAGUNG'
+    'KABUPATEN TULUNGAGUNG',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
-VALUES (48, 'KD', 'KEDIRI', 'KEDIRI', 'KOTA KEDIRI');
+VALUES (
+    48,
+    'KD',
+    'KEDIRI',
+    'KEDIRI',
+    'KOTA KEDIRI',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
 VALUES (
     49,
     'SI',
     'SUKABUMI',
     'SUKABUMI',
-    'KOTA SUKABUMI'
+    'KOTA SUKABUMI',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
-VALUES (50, 'PSE', 'PASARSENEN', 'PASARSENEN', 'JAKARTA');
+VALUES (
+    50,
+    'PSE',
+    'PASARSENEN',
+    'PASARSENEN',
+    'JAKARTA',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
-VALUES (51, 'JNG', 'JATINEGARA', 'JATINEGARA', 'JAKARTA');
+VALUES (
+    51,
+    'JNG',
+    'JATINEGARA',
+    'JATINEGARA',
+    'JAKARTA',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
 VALUES (
     52,
     'GM',
     'GUMILIR',
     'GUMILIR',
-    'KABUPATEN CILACAP'
+    'KABUPATEN CILACAP',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -391,7 +667,10 @@ VALUES (
     'CP',
     'CILACAP',
     'CILACAP',
-    'KABUPATEN CILACAP'
+    'KABUPATEN CILACAP',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -399,7 +678,10 @@ VALUES (
     'DMR',
     'DOLOKMERANGIR',
     'DOLOKMERANGIR',
-    'KABUPATEN SIMALUNGUN'
+    'KABUPATEN SIMALUNGUN',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -407,7 +689,10 @@ VALUES (
     'LTD',
     'LAUT TADOR',
     'LAUT TADOR',
-    'KABUPATEN BATU BARA'
+    'KABUPATEN BATU BARA',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -415,7 +700,10 @@ VALUES (
     'PRA',
     'PERLANAAN',
     'PERLANAAN',
-    'KABUPATEN SIMALUNGUN'
+    'KABUPATEN SIMALUNGUN',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -423,7 +711,10 @@ VALUES (
     'LMP',
     'LIMAPULUH',
     'LIMAPULUH',
-    'KABUPATEN SIMALUNGUN'
+    'KABUPATEN SIMALUNGUN',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -431,7 +722,10 @@ VALUES (
     'SBJ',
     'SEI BEJANGKAR',
     'SEI BEJANGKAR',
-    'KABUPATEN BATU BARA'
+    'KABUPATEN BATU BARA',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -439,7 +733,10 @@ VALUES (
     'KIS',
     'KISARAN',
     'KISARAN',
-    'KABUPATEN ASAHAN'
+    'KABUPATEN ASAHAN',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -447,7 +744,10 @@ VALUES (
     'PUR',
     'PULURAJA',
     'PULURAJA',
-    'KABUPATEN ASAHAN'
+    'KABUPATEN ASAHAN',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -455,7 +755,10 @@ VALUES (
     'AKB',
     'AEKLOBA',
     'AEKLOBA',
-    'KABUPATEN ASAHAN'
+    'KABUPATEN ASAHAN',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -463,7 +766,10 @@ VALUES (
     'MBM',
     'MAMBANGMUDA',
     'MAMBANGMUDA',
-    'KABUPATEN LABUHAN BATU'
+    'KABUPATEN LABUHAN BATU',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -471,7 +777,10 @@ VALUES (
     'PME',
     'PAMINGKE',
     'PAMINGKE',
-    'KABUPATEN LABUHANBATU UTARA'
+    'KABUPATEN LABUHANBATU UTARA',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -479,7 +788,10 @@ VALUES (
     'PHA',
     'PADANGHALABAN',
     'PADANGHALABAN',
-    'KABUPATEN LABUHAN BATU'
+    'KABUPATEN LABUHAN BATU',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -487,7 +799,10 @@ VALUES (
     'MBU',
     'MARBAU',
     'MARBAU',
-    'KABUPATEN LABUHAN BATU'
+    'KABUPATEN LABUHAN BATU',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -495,7 +810,10 @@ VALUES (
     'TNB',
     'TANJUNGBALAI',
     'TANJUNGBALAI',
-    'KOTA TANJUNG BALAI'
+    'KOTA TANJUNG BALAI',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -503,7 +821,10 @@ VALUES (
     'TBI',
     'TEBING TINGGI',
     'TEBING TINGGI',
-    'KOTA TEBING TINGGI'
+    'KOTA TEBING TINGGI',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -511,7 +832,10 @@ VALUES (
     'RPH',
     'RAMPAH',
     'RAMPAH',
-    'KOTA TEBING TINGGI'
+    'KOTA TEBING TINGGI',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -519,7 +843,10 @@ VALUES (
     'PBA',
     'PERBAUNGAN',
     'PERBAUNGAN',
-    'KABUPATEN SERDANG BEDAGAI'
+    'KABUPATEN SERDANG BEDAGAI',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -527,7 +854,10 @@ VALUES (
     'LBP',
     'LUBUKPAKAM',
     'LUBUKPAKAM',
-    'KABUPATEN DELI SERDANG'
+    'KABUPATEN DELI SERDANG',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -535,7 +865,10 @@ VALUES (
     'ARB',
     'ARASKABU',
     'ARASKABU',
-    'KABUPATEN DELI SERDANG'
+    'KABUPATEN DELI SERDANG',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -543,7 +876,10 @@ VALUES (
     'BTK',
     'BATANGKUIS',
     'BATANGKUIS',
-    'KABUPATEN DELI SERDANG'
+    'KABUPATEN DELI SERDANG',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -551,17 +887,32 @@ VALUES (
     'BAP',
     'BANDARHALIPAH',
     'BANDARHALIPAH',
-    'KABUPATEN DELI SERDANG'
+    'KABUPATEN DELI SERDANG',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
-VALUES (74, 'MDN', 'MEDAN', 'MEDAN', 'KOTA MEDAN');
+VALUES (
+    74,
+    'MDN',
+    'MEDAN',
+    'MEDAN',
+    'KOTA MEDAN',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
 VALUES (
     75,
     'RAP',
     'RANTAUPRAPAT',
     'RANTAUPRAPAT',
-    'KABUPATEN LABUHAN BATU'
+    'KABUPATEN LABUHAN BATU',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -569,7 +920,10 @@ VALUES (
     'SIR',
     'SIANTAR',
     'SIANTAR',
-    'KOTA PEMATANG SIANTAR'
+    'KOTA PEMATANG SIANTAR',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -577,19 +931,43 @@ VALUES (
     'KAC',
     'KIARACONDONG',
     'KIARACONDONG',
-    'KOTA BANDUNG'
+    'KOTA BANDUNG',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
-VALUES (78, 'BD', 'BANDUNG', 'BANDUNG', 'KOTA BANDUNG');
+VALUES (
+    78,
+    'BD',
+    'BANDUNG',
+    'BANDUNG',
+    'KOTA BANDUNG',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
-VALUES (79, 'CMI', 'CIMAHI', 'CIMAHI', 'KOTA CIMAHI');
+VALUES (
+    79,
+    'CMI',
+    'CIMAHI',
+    'CIMAHI',
+    'KOTA CIMAHI',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
 VALUES (
     80,
     'PLD',
     'PLERED',
     'PLERED',
-    'KABUPATEN PURWAKARTA'
+    'KABUPATEN PURWAKARTA',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -597,7 +975,10 @@ VALUES (
     'PWK',
     'PURWAKARTA',
     'PURWAKARTA',
-    'KABUPATEN PURWAKARTA'
+    'KABUPATEN PURWAKARTA',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -605,7 +986,10 @@ VALUES (
     'CKP',
     'CIKAMPEK',
     'CIKAMPEK',
-    'KABUPATEN KARAWANG'
+    'KABUPATEN KARAWANG',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -613,7 +997,10 @@ VALUES (
     'KW',
     'KARAWANG',
     'KARAWANG',
-    'KABUPATEN KARAWANG'
+    'KABUPATEN KARAWANG',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -621,21 +1008,54 @@ VALUES (
     'CKR',
     'CIKARANG',
     'CIKARANG',
-    'KABUPATEN BEKASI'
+    'KABUPATEN BEKASI',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
-VALUES (85, 'BKS', 'BEKASI', 'BEKASI', 'KOTA BEKASI');
+VALUES (
+    85,
+    'BKS',
+    'BEKASI',
+    'BEKASI',
+    'KOTA BEKASI',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
-VALUES (86, 'BJR', 'BANJAR', 'BANJAR', 'KOTA BANJAR');
+VALUES (
+    86,
+    'BJR',
+    'BANJAR',
+    'BANJAR',
+    'KOTA BANJAR',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
-VALUES (87, 'CI', 'CIAMIS', 'CIAMIS', 'KABUPATEN CIAMIS');
+VALUES (
+    87,
+    'CI',
+    'CIAMIS',
+    'CIAMIS',
+    'KABUPATEN CIAMIS',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
 VALUES (
     88,
     'TSM',
     'TASIKMALAYA',
     'TASIKMALAYA',
-    'KOTA TASIKMALAYA'
+    'KOTA TASIKMALAYA',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -643,19 +1063,43 @@ VALUES (
     'CPD',
     'CIPEUNDEUY',
     'CIPEUNDEUY',
-    'KABUPATEN GARUT'
+    'KABUPATEN GARUT',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
-VALUES (90, 'CB', 'CIBATU', 'CIBATU', 'KABUPATEN GARUT');
+VALUES (
+    90,
+    'CB',
+    'CIBATU',
+    'CIBATU',
+    'KABUPATEN GARUT',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
-VALUES (91, 'LL', 'LELES', 'LELES', 'KABUPATEN GARUT');
+VALUES (
+    91,
+    'LL',
+    'LELES',
+    'LELES',
+    'KABUPATEN GARUT',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
 VALUES (
     92,
     'CCL',
     'CICALENGKA',
     'CICALENGKA',
-    'KABUPATEN BANDUNG'
+    'KABUPATEN BANDUNG',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -663,7 +1107,10 @@ VALUES (
     'KTA',
     'KUTOARJO',
     'KUTOARJO',
-    'KABUPATEN PURWOREJO'
+    'KABUPATEN PURWOREJO',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -671,27 +1118,54 @@ VALUES (
     'JN',
     'JENAR',
     'JENAR',
-    'KABUPATEN PURWOREJO'
+    'KABUPATEN PURWOREJO',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
-VALUES (95, 'WJ', 'WOJO', 'WOJO', 'KABUPATEN PURWOREJO');
+VALUES (
+    95,
+    'WJ',
+    'WOJO',
+    'WOJO',
+    'KABUPATEN PURWOREJO',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
 VALUES (
     96,
     'KDG',
     'KEDUNDANG',
     'KEDUNDANG',
-    'KABUPATEN KULON PROGO'
+    'KABUPATEN KULON PROGO',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
-VALUES (97, 'WT', 'WATES', 'WATES', 'KOTA YOGYAKARTA');
+VALUES (
+    97,
+    'WT',
+    'WATES',
+    'WATES',
+    'KOTA YOGYAKARTA',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
 VALUES (
     98,
     'YK',
     'YOGYAKARTA',
     'YOGYAKARTA',
-    'KOTA YOGYAKARTA'
+    'KOTA YOGYAKARTA',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -699,7 +1173,10 @@ VALUES (
     'LPN',
     'LEMPUYANGAN',
     'LEMPUYANGAN',
-    'KOTA YOGYAKARTA'
+    'KOTA YOGYAKARTA',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -707,7 +1184,10 @@ VALUES (
     'KT',
     'KLATEN',
     'KLATEN',
-    'KABUPATEN KLATEN'
+    'KABUPATEN KLATEN',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -715,7 +1195,10 @@ VALUES (
     'PWS',
     'PURWOSARI',
     'PURWOSARI',
-    'KOTA SOLO'
+    'KOTA SOLO',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -723,17 +1206,32 @@ VALUES (
     'SLO',
     'SOLO BALAPAN',
     'SOLO BALAPAN',
-    'KOTA SOLO'
+    'KOTA SOLO',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
-VALUES (103, 'SLM', 'SALEM', 'SALEM', 'KABUPATEN SRAGEN');
+VALUES (
+    103,
+    'SLM',
+    'SALEM',
+    'SALEM',
+    'KABUPATEN SRAGEN',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
 VALUES (
     104,
     'GD',
     'GUNDIH',
     'GUNDIH',
-    'KABUPATEN GROBOGAN'
+    'KABUPATEN GROBOGAN',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -741,7 +1239,10 @@ VALUES (
     'TW',
     'TELAWA',
     'TELAWA',
-    'KABUPATEN BOYOLALI'
+    'KABUPATEN BOYOLALI',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -749,7 +1250,10 @@ VALUES (
     'KEJ',
     'KEDUNGJATI',
     'KEDUNGJATI',
-    'KABUPATEN GROBOGAN'
+    'KABUPATEN GROBOGAN',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -757,7 +1261,10 @@ VALUES (
     'ATA',
     'ALASTUA',
     'ALASTUA',
-    'KOTA SEMARANG'
+    'KOTA SEMARANG',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -765,7 +1272,10 @@ VALUES (
     'SMT',
     'SEMARANG TAWANG BANK JATENG',
     'SEMARANG TAWANG BANK JATENG',
-    'KOTA SEMARANG'
+    'KOTA SEMARANG',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -773,7 +1283,10 @@ VALUES (
     'SMC',
     'SEMARANG PONCOL',
     'SEMARANG PONCOL',
-    'KOTA SEMARANG'
+    'KOTA SEMARANG',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -781,7 +1294,10 @@ VALUES (
     'WLR',
     'WELERI',
     'WELERI',
-    'KABUPATEN KENDAL'
+    'KABUPATEN KENDAL',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -789,7 +1305,10 @@ VALUES (
     'BTG',
     'BATANG',
     'BATANG',
-    'KOTA PEKALONGAN'
+    'KOTA PEKALONGAN',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -797,7 +1316,10 @@ VALUES (
     'PK',
     'PEKALONGAN',
     'PEKALONGAN',
-    'KOTA PEKALONGAN'
+    'KOTA PEKALONGAN',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -805,7 +1327,10 @@ VALUES (
     'PML',
     'PEMALANG',
     'PEMALANG',
-    'KOTA PEMALANG'
+    'KOTA PEMALANG',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -813,19 +1338,43 @@ VALUES (
     'PML',
     'PEMALANG',
     'PEMALANG',
-    'KOTA PEMALANG'
+    'KOTA PEMALANG',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
-VALUES (115, 'SLW', 'SLAWI', 'SLAWI', 'KOTA TEGAL');
+VALUES (
+    115,
+    'SLW',
+    'SLAWI',
+    'SLAWI',
+    'KOTA TEGAL',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
-VALUES (116, 'TG', 'TEGAL', 'TEGAL', 'KOTA TEGAL');
+VALUES (
+    116,
+    'TG',
+    'TEGAL',
+    'TEGAL',
+    'KOTA TEGAL',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
 VALUES (
     117,
     'BB',
     'BREBES',
     'BREBES',
-    'KABUPATEN BREBES'
+    'KABUPATEN BREBES',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -833,7 +1382,10 @@ VALUES (
     'TGN',
     'TANJUNG',
     'TANJUNG',
-    'KABUPATEN BREBES'
+    'KABUPATEN BREBES',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -841,7 +1393,10 @@ VALUES (
     'LOS',
     'LOSARI',
     'LOSARI',
-    'KABUPATEN CIREBON'
+    'KABUPATEN CIREBON',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -849,7 +1404,10 @@ VALUES (
     'BBK',
     'BABAKAN',
     'BABAKAN',
-    'KABUPATEN CIREBON'
+    'KABUPATEN CIREBON',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -857,7 +1415,10 @@ VALUES (
     'CLD',
     'CILEDUG',
     'CILEDUG',
-    'KABUPATEN CIREBON'
+    'KABUPATEN CIREBON',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -865,7 +1426,10 @@ VALUES (
     'PGB',
     'PEGADENBARU',
     'PEGADENBARU',
-    'KABUPATEN SUBANG'
+    'KABUPATEN SUBANG',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -873,7 +1437,10 @@ VALUES (
     'HGL',
     'HAURGEULIS',
     'HAURGEULIS',
-    'KABUPATEN INDRAMAYU'
+    'KABUPATEN INDRAMAYU',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -881,7 +1448,10 @@ VALUES (
     'TIS',
     'TERISI',
     'TERISI',
-    'KABUPATEN INDRAMAYU'
+    'KABUPATEN INDRAMAYU',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -889,7 +1459,10 @@ VALUES (
     'JTB',
     'JATIBARANG',
     'JATIBARANG',
-    'KABUPATEN INDRAMAYU'
+    'KABUPATEN INDRAMAYU',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -897,17 +1470,32 @@ VALUES (
     'AWN',
     'ARJAWINANGUN',
     'ARJAWINANGUN',
-    'KABUPATEN CIREBON'
+    'KABUPATEN CIREBON',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
-VALUES (127, 'CN', 'CIREBON', 'CIREBON', 'KOTA CIREBON');
+VALUES (
+    127,
+    'CN',
+    'CIREBON',
+    'CIREBON',
+    'KOTA CIREBON',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
 VALUES (
     128,
     'CNP',
     'CIREBON PRUJAKAN',
     'CIREBON PRUJAKAN',
-    'KOTA CIREBON'
+    'KOTA CIREBON',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -915,17 +1503,32 @@ VALUES (
     'KGG',
     'KETANGGUNGAN',
     'KETANGGUNGAN',
-    'KABUPATEN BREBES'
+    'KABUPATEN BREBES',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
-VALUES (130, 'PPK', 'PRUPUK', 'PRUPUK', 'KOTA TEGAL');
+VALUES (
+    130,
+    'PPK',
+    'PRUPUK',
+    'PRUPUK',
+    'KOTA TEGAL',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
 VALUES (
     131,
     'BMA',
     'BUMIAYU',
     'BUMIAYU',
-    'KABUPATEN BREBES'
+    'KABUPATEN BREBES',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -933,17 +1536,32 @@ VALUES (
     'PWT',
     'PURWOKERTO',
     'PURWOKERTO',
-    'PURWOKERTO'
+    'PURWOKERTO',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
-VALUES (133, 'MA', 'MAOS', 'MAOS', 'KABUPATEN CILACAP');
+VALUES (
+    133,
+    'MA',
+    'MAOS',
+    'MAOS',
+    'KABUPATEN CILACAP',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
 VALUES (
     134,
     'JRL',
     'JERUKLEGI',
     'JERUKLEGI',
-    'KABUPATEN CILACAP'
+    'KABUPATEN CILACAP',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -951,7 +1569,10 @@ VALUES (
     'SDR',
     'SIDAREJA',
     'SIDAREJA',
-    'KABUPATEN CILACAP'
+    'KABUPATEN CILACAP',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -959,17 +1580,32 @@ VALUES (
     'GDM',
     'GANDRUNGMANGUN',
     'GANDRUNGMANGUN',
-    'KABUPATEN CILACAP'
+    'KABUPATEN CILACAP',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
-VALUES (137, 'CSA', 'CISAAT', 'CISAAT', 'KOTA SUKABUMI');
+VALUES (
+    137,
+    'CSA',
+    'CISAAT',
+    'CISAAT',
+    'KOTA SUKABUMI',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
 VALUES (
     138,
     'KE',
     'KARANGTENGAH',
     'KARANGTENGAH',
-    'KOTA SUKABUMI'
+    'KOTA SUKABUMI',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -977,7 +1613,10 @@ VALUES (
     'CBD',
     'CIBADAK',
     'CIBADAK',
-    'KOTA SUKABUMI'
+    'KOTA SUKABUMI',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -985,7 +1624,10 @@ VALUES (
     'PRK',
     'PARUNG KUDA',
     'PARUNG KUDA',
-    'KOTA SUKABUMI'
+    'KOTA SUKABUMI',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -993,7 +1635,10 @@ VALUES (
     'CCR',
     'CICURUG',
     'CICURUG',
-    'KOTA SUKABUMI'
+    'KOTA SUKABUMI',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1001,7 +1646,10 @@ VALUES (
     'CGB',
     'CIGOMBONG',
     'CIGOMBONG',
-    'KABUPATEN BOGOR'
+    'KABUPATEN BOGOR',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1009,7 +1657,10 @@ VALUES (
     'MSG',
     'MASENG',
     'MASENG',
-    'KABUPATEN BOGOR'
+    'KABUPATEN BOGOR',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1017,17 +1668,32 @@ VALUES (
     'BTT',
     'BATUTULIS',
     'BATUTULIS',
-    'KABUPATEN BOGOR'
+    'KABUPATEN BOGOR',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
-VALUES (145, 'BOO', 'BOGOR', 'BOGOR', 'KOTA BOGOR');
+VALUES (
+    145,
+    'BOO',
+    'BOGOR',
+    'BOGOR',
+    'KOTA BOGOR',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
 VALUES (
     146,
     'KYA',
     'KROYA',
     'KROYA',
-    'KABUPATEN CILACAP'
+    'KABUPATEN CILACAP',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1035,7 +1701,10 @@ VALUES (
     'SPH',
     'SUMPIUH',
     'SUMPIUH',
-    'KABUPATEN BANYUMAS'
+    'KABUPATEN BANYUMAS',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1043,7 +1712,10 @@ VALUES (
     'GB',
     'GOMBONG',
     'GOMBONG',
-    'KABUPATEN KEBUMEN'
+    'KABUPATEN KEBUMEN',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1051,7 +1723,10 @@ VALUES (
     'KA',
     'KARANGANYAR',
     'KARANGANYAR',
-    'KABUPATEN KEBUMEN'
+    'KABUPATEN KEBUMEN',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1059,7 +1734,10 @@ VALUES (
     'KM',
     'KEBUMEN',
     'KEBUMEN',
-    'KABUPATEN KEBUMEN'
+    'KABUPATEN KEBUMEN',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1067,7 +1745,10 @@ VALUES (
     'KWN',
     'KUTOWINANGUN',
     'KUTOWINANGUN',
-    'KABUPATEN KEBUMEN'
+    'KABUPATEN KEBUMEN',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1075,7 +1756,10 @@ VALUES (
     'GBN',
     'GAMBRINGAN',
     'GAMBRINGAN',
-    'KABUPATEN GROBOGAN'
+    'KABUPATEN GROBOGAN',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1083,19 +1767,43 @@ VALUES (
     'NBO',
     'NGROMBO',
     'NGROMBO',
-    'KABUPATEN GROBOGAN'
+    'KABUPATEN GROBOGAN',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
-VALUES (154, 'WR', 'WARU', 'WARU', 'SIDOARJO');
+VALUES (
+    154,
+    'WR',
+    'WARU',
+    'WARU',
+    'SIDOARJO',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
-VALUES (155, 'KRN', 'KRIAN', 'KRIAN', 'SIDOARJO');
+VALUES (
+    155,
+    'KRN',
+    'KRIAN',
+    'KRIAN',
+    'SIDOARJO',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
 VALUES (
     156,
     'MR',
     'MOJOKERTO',
     'MOJOKERTO',
-    'KOTA MOJOKERTO'
+    'KOTA MOJOKERTO',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1103,7 +1811,10 @@ VALUES (
     'CRM',
     'CURAHMALANG',
     'CURAHMALANG',
-    'KABUPATEN JOMBANG'
+    'KABUPATEN JOMBANG',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1111,7 +1822,10 @@ VALUES (
     'JG',
     'JOMBANG',
     'JOMBANG',
-    'KABUPATEN JOMBANG'
+    'KABUPATEN JOMBANG',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1119,7 +1833,10 @@ VALUES (
     'SMB',
     'SEMBUNG',
     'SEMBUNG',
-    'KABUPATEN JOMBANG'
+    'KABUPATEN JOMBANG',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1127,7 +1844,10 @@ VALUES (
     'KTS',
     'KERTOSONO',
     'KERTOSONO',
-    'KABUPATEN NGANJUK'
+    'KABUPATEN NGANJUK',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1135,23 +1855,65 @@ VALUES (
     'NJ',
     'NGANJUK',
     'NGANJUK',
-    'KABUPATEN NGANJUK'
+    'KABUPATEN NGANJUK',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
-VALUES (162, 'CRB', 'CARUBAN', 'CARUBAN', 'KOTA MADIUN');
+VALUES (
+    162,
+    'CRB',
+    'CARUBAN',
+    'CARUBAN',
+    'KOTA MADIUN',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
-VALUES (163, 'MN', 'MADIUN', 'MADIUN', 'KOTA MADIUN');
+VALUES (
+    163,
+    'MN',
+    'MADIUN',
+    'MADIUN',
+    'KOTA MADIUN',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
-VALUES (164, 'GG', 'GENENG', 'GENENG', 'KABUPATEN NGAWI');
+VALUES (
+    164,
+    'GG',
+    'GENENG',
+    'GENENG',
+    'KABUPATEN NGAWI',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
-VALUES (165, 'PA', 'PARON', 'PARON', 'KABUPATEN NGAWI');
+VALUES (
+    165,
+    'PA',
+    'PARON',
+    'PARON',
+    'KABUPATEN NGAWI',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
 VALUES (
     166,
     'KG',
     'KEDUNGGALAR',
     'KEDUNGGALAR',
-    'KABUPATEN NGAWI'
+    'KABUPATEN NGAWI',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1159,7 +1921,10 @@ VALUES (
     'WK',
     'WALIKUKUN',
     'WALIKUKUN',
-    'KABUPATEN NGAWI'
+    'KABUPATEN NGAWI',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1167,7 +1932,10 @@ VALUES (
     'SR',
     'SRAGEN',
     'SRAGEN',
-    'KABUPATEN SRAGEN'
+    'KABUPATEN SRAGEN',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1175,7 +1943,10 @@ VALUES (
     'SK',
     'SOLOJEBRES',
     'SOLOJEBRES',
-    'KOTA SOLO'
+    'KOTA SOLO',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1183,7 +1954,10 @@ VALUES (
     'RGP',
     'ROGOJAMPI',
     'ROGOJAMPI',
-    'KABUPATEN BANYUWANGI'
+    'KABUPATEN BANYUWANGI',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1191,7 +1965,10 @@ VALUES (
     'TGR',
     'TEMUGURUH',
     'TEMUGURUH',
-    'KABUPATEN BANYUWANGI'
+    'KABUPATEN BANYUWANGI',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1199,7 +1976,10 @@ VALUES (
     'KSL',
     'KALISETAIL',
     'KALISETAIL',
-    'KABUPATEN BANYUWANGI'
+    'KABUPATEN BANYUWANGI',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1207,7 +1987,10 @@ VALUES (
     'SWD',
     'SUMBER WADUNG',
     'SUMBER WADUNG',
-    'KABUPATEN BANYUWANGI'
+    'KABUPATEN BANYUWANGI',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1215,7 +1998,10 @@ VALUES (
     'GLM',
     'GLENMORE',
     'GLENMORE',
-    'KABUPATEN BANYUWANGI'
+    'KABUPATEN BANYUWANGI',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1223,7 +2009,10 @@ VALUES (
     'KBR',
     'KALIBARU',
     'KALIBARU',
-    'KABUPATEN BANYUWANGI'
+    'KABUPATEN BANYUWANGI',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1231,7 +2020,10 @@ VALUES (
     'KLT',
     'KALISAT',
     'KALISAT',
-    'KABUPATEN JEMBER'
+    'KABUPATEN JEMBER',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1239,7 +2031,10 @@ VALUES (
     'AJ',
     'ARJASA',
     'ARJASA',
-    'KABUPATEN JEMBER'
+    'KABUPATEN JEMBER',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1247,7 +2042,10 @@ VALUES (
     'JR',
     'JEMBER',
     'JEMBER',
-    'KABUPATEN JEMBER'
+    'KABUPATEN JEMBER',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1255,7 +2053,10 @@ VALUES (
     'RBP',
     'RAMBIPUJI',
     'RAMBIPUJI',
-    'KABUPATEN JEMBER'
+    'KABUPATEN JEMBER',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1263,7 +2064,10 @@ VALUES (
     'TGL',
     'TANGGUL',
     'TANGGUL',
-    'KABUPATEN JEMBER'
+    'KABUPATEN JEMBER',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1271,7 +2075,10 @@ VALUES (
     'JTR',
     'JATIROTO',
     'JATIROTO',
-    'KABUPATEN LUMAJANG'
+    'KABUPATEN LUMAJANG',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1279,7 +2086,10 @@ VALUES (
     'KK',
     'KLAKAH',
     'KLAKAH',
-    'KABUPATEN LUMAJANG'
+    'KABUPATEN LUMAJANG',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1287,7 +2097,10 @@ VALUES (
     'RN',
     'RANUYOSO',
     'RANUYOSO',
-    'KABUPATEN LUMAJANG'
+    'KABUPATEN LUMAJANG',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1295,7 +2108,10 @@ VALUES (
     'PB',
     'PROBOLINGGO',
     'PROBOLINGGO',
-    'KABUPATEN PROBOLINGGO'
+    'KABUPATEN PROBOLINGGO',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1303,19 +2119,43 @@ VALUES (
     'PS',
     'PASURUAN',
     'PASURUAN',
-    'KOTA PASURUAN'
+    'KOTA PASURUAN',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
-VALUES (186, 'BG', 'BANGIL', 'BANGIL', 'KOTA PASURUAN');
+VALUES (
+    186,
+    'BG',
+    'BANGIL',
+    'BANGIL',
+    'KOTA PASURUAN',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
-VALUES (187, 'SDA', 'SIDOARJO', 'SIDOARJO', 'SIDOARJO');
+VALUES (
+    187,
+    'SDA',
+    'SIDOARJO',
+    'SIDOARJO',
+    'SIDOARJO',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
 VALUES (
     188,
     'WO',
     'WONOKROMO',
     'WONOKROMO',
-    'KOTA SURABAYA'
+    'KOTA SURABAYA',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1323,7 +2163,10 @@ VALUES (
     'SGU',
     'SURABAYA GUBENG',
     'SURABAYA GUBENG',
-    'KOTA SURABAYA'
+    'KOTA SURABAYA',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1331,7 +2174,10 @@ VALUES (
     'SBI',
     'SURABAYA PASAR TURI',
     'SURABAYA PASAR TURI',
-    'KOTA SURABAYA'
+    'KOTA SURABAYA',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1339,7 +2185,10 @@ VALUES (
     'LMG',
     'LAMONGAN',
     'LAMONGAN',
-    'KABUPATEN LAMONGAN'
+    'KABUPATEN LAMONGAN',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1347,19 +2196,43 @@ VALUES (
     'BJ',
     'BOJONEGORO',
     'BOJONEGORO',
-    'KABUPATEN BOJONEGORO'
+    'KABUPATEN BOJONEGORO',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
-VALUES (193, 'CU', 'CEPU', 'CEPU', 'KABUPATEN BLORA');
+VALUES (
+    193,
+    'CU',
+    'CEPU',
+    'CEPU',
+    'KABUPATEN BLORA',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
-VALUES (194, 'WDU', 'WADU', 'WADU', 'KABUPATEN BLORA');
+VALUES (
+    194,
+    'WDU',
+    'WADU',
+    'WADU',
+    'KABUPATEN BLORA',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
 VALUES (
     195,
     'RBG',
     'RANDUBLATUNG',
     'RANDUBLATUNG',
-    'KABUPATEN BLORA'
+    'KABUPATEN BLORA',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1367,17 +2240,32 @@ VALUES (
     'DPL',
     'DOPLANG',
     'DOPLANG',
-    'KABUPATEN BLORA'
+    'KABUPATEN BLORA',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
-VALUES (197, 'MAG', 'MAGETAN', 'MAGETAN', 'MAGETAN');
+VALUES (
+    197,
+    'MAG',
+    'MAGETAN',
+    'MAGETAN',
+    'MAGETAN',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
 VALUES (
     198,
     'KTG',
     'KETAPANG',
     'KETAPANG',
-    'KABUPATEN BANYUWANGI'
+    'KABUPATEN BANYUWANGI',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1385,7 +2273,10 @@ VALUES (
     'BBT',
     'BABAT',
     'BABAT',
-    'KABUPATEN LAMONGAN'
+    'KABUPATEN LAMONGAN',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1393,17 +2284,32 @@ VALUES (
     'LEC',
     'LECES',
     'LECES',
-    'KABUPATEN PROBOLINGGO'
+    'KABUPATEN PROBOLINGGO',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
-VALUES (201, 'PDX', 'PADANGX', 'PADANGX', 'KOTA PADANG');
+VALUES (
+    201,
+    'PDX',
+    'PADANGX',
+    'PADANGX',
+    'KOTA PADANG',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
 VALUES (
     202,
     'NJG',
     'NGUJANG',
     'NGUJANG',
-    'KABUPATEN TULUNGAGUNG'
+    'KABUPATEN TULUNGAGUNG',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1411,7 +2317,10 @@ VALUES (
     'BOP',
     'BOGOR PALEDANG',
     'BOGOR PALEDANG',
-    'KOTA BOGOR'
+    'KOTA BOGOR',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1419,7 +2328,10 @@ VALUES (
     'SGT',
     'SUNGAI TUHA',
     'SUNGAI TUHA',
-    'MARTAPURA'
+    'MARTAPURA',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
 VALUES (
@@ -1427,37 +2339,44 @@ VALUES (
     'WAP',
     'WAY PISANG',
     'WAY PISANG',
-    'KABUPATEN WAY KANAN'
+    'KABUPATEN WAY KANAN',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
-VALUES (206, 'NGW', 'NGAWI', 'NGAWI', 'KABUPATEN NGAWI');
+VALUES (
+    206,
+    'NGW',
+    'NGAWI',
+    'NGAWI',
+    'KABUPATEN NGAWI',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 INSERT INTO `stations`
 VALUES (
     207,
     'BWI',
     'BANYUWANGI KOTA',
     'BANYUWANGI KOTA',
-    'KABUPATEN BANYUWANGI'
+    'KABUPATEN BANYUWANGI',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
   );
 INSERT INTO `stations`
-VALUES (208, 'GRT', 'GARUT', 'GARUT', 'KABUPATEN GARUT');
--- ----------------------------
--- Table structure for routes
--- ----------------------------
-DROP TABLE IF EXISTS `routes`;
-CREATE TABLE `routes` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `source` varchar(255) NULL DEFAULT NULL,
-  `destination` varchar(255) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-);
--- ----------------------------
--- Records of routes
--- ----------------------------
-INSERT INTO `routes`
-VALUES (1, 'PASARSENEN', 'JATINEGARA');
-INSERT INTO `routes`
-VALUES (2, 'JATINEGARA', 'PASARSENEN');
+VALUES (
+    208,
+    'GRT',
+    'GARUT',
+    'GARUT',
+    'KABUPATEN GARUT',
+    0,
+    '2024-11-11 20:37:22',
+    '2024-11-11 20:37:22'
+  );
 -- ----------------------------
 -- Table structure for times
 -- ----------------------------
@@ -1466,31 +2385,34 @@ CREATE TABLE `times` (
   `id` int NOT NULL AUTO_INCREMENT,
   `arrival` time NULL DEFAULT NULL,
   `departure` time NULL DEFAULT NULL,
+  `is_deleted` tinyint NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE
-);
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 -- ----------------------------
 -- Records of times
 -- ----------------------------
 INSERT INTO `times`
-VALUES (1, '04:00:00', '06:00:00');
+VALUES (1, '04:00:00', '06:00:00', 0, NULL, NULL);
 INSERT INTO `times`
-VALUES (2, '06:00:00', '08:00:00');
+VALUES (2, '06:00:00', '08:00:00', 0, NULL, NULL);
 INSERT INTO `times`
-VALUES (3, '08:00:00', '10:00:00');
+VALUES (3, '08:00:00', '10:00:00', 0, NULL, NULL);
 INSERT INTO `times`
-VALUES (4, '10:00:00', '12:00:00');
+VALUES (4, '10:00:00', '12:00:00', 0, NULL, NULL);
 INSERT INTO `times`
-VALUES (5, '12:00:00', '14:00:00');
+VALUES (5, '12:00:00', '14:00:00', 0, NULL, NULL);
 INSERT INTO `times`
-VALUES (6, '14:00:00', '16:00:00');
+VALUES (6, '14:00:00', '16:00:00', 0, NULL, NULL);
 INSERT INTO `times`
-VALUES (7, '16:00:00', '18:00:00');
+VALUES (7, '16:00:00', '18:00:00', 0, NULL, NULL);
 INSERT INTO `times`
-VALUES (8, '18:00:00', '20:00:00');
+VALUES (8, '18:00:00', '20:00:00', 0, NULL, NULL);
 INSERT INTO `times`
-VALUES (9, '20:00:00', '22:00:00');
+VALUES (9, '20:00:00', '22:00:00', 0, NULL, NULL);
 INSERT INTO `times`
-VALUES (10, '22:00:00', '00:00:00');
+VALUES (10, '22:00:00', '00:00:00', 0, NULL, NULL);
 -- ----------------------------
 -- Table structure for trains
 -- ----------------------------
@@ -1505,14 +2427,15 @@ CREATE TABLE `trains` (
   `carriages` int NOT NULL DEFAULT 2,
   `price` decimal(10, 2) NOT NULL,
   `status` enum('active', 'cancelled', 'completed') NULL DEFAULT 'active',
+  `is_deleted` tinyint NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `trains_ibfk_1`(`route_id` ASC) USING BTREE,
   INDEX `trains_ibfk_2`(`time_id` ASC) USING BTREE,
   CONSTRAINT `trains_ibfk_1` FOREIGN KEY (`route_id`) REFERENCES `routes` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `trains_ibfk_2` FOREIGN KEY (`time_id`) REFERENCES `times` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
-);
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 -- ----------------------------
 -- Records of trains
 -- ----------------------------
@@ -1527,8 +2450,9 @@ CREATE TABLE `seats` (
   `seat_number` varchar(10) NOT NULL,
   `seat_type` enum('window', 'aisle', 'middle') NOT NULL,
   `is_available` tinyint(1) NULL DEFAULT 1,
+  `is_deleted` tinyint NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `unique_seat`(
     `train_id` ASC,
@@ -1536,7 +2460,7 @@ CREATE TABLE `seats` (
     `seat_number` ASC
   ) USING BTREE,
   CONSTRAINT `seats_ibfk_1` FOREIGN KEY (`train_id`) REFERENCES `trains` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
-);
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 -- ----------------------------
 -- Records of seats
 -- ----------------------------
@@ -1549,12 +2473,13 @@ CREATE TABLE `orders` (
   `user_id` int NOT NULL,
   `train_id` int NOT NULL,
   `seat_id` int NOT NULL,
-  `passenger_name` varchar(100) NOT NULL,
-  `passenger_id_number` varchar(50) NOT NULL,
+  `adult_passenger` int NOT NULL,
+  `child_passenger` int NULL DEFAULT NULL,
   `status` enum('pending', 'paid', 'cancelled') NULL DEFAULT 'pending',
   `total_amount` decimal(10, 2) NOT NULL,
+  `is_deleted` tinyint NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `orders_ibfk_1`(`user_id` ASC) USING BTREE,
   INDEX `orders_ibfk_2`(`train_id` ASC) USING BTREE,
@@ -1562,7 +2487,7 @@ CREATE TABLE `orders` (
   CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`train_id`) REFERENCES `trains` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `orders_ibfk_3` FOREIGN KEY (`seat_id`) REFERENCES `seats` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
-);
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 -- ----------------------------
 -- Records of orders
 -- ----------------------------
@@ -1577,8 +2502,9 @@ CREATE TABLE `payments` (
   `payment_method` enum('credit_card', 'bank_transfer', 'e_wallet') NOT NULL,
   `transaction_id` varchar(100) NOT NULL,
   `status` enum('pending', 'success', 'failed') NULL DEFAULT 'pending',
+  `is_deleted` tinyint NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `payments_ibfk_1`(`order_id` ASC) USING BTREE,
   CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE

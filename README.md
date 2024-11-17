@@ -79,12 +79,19 @@ This is a PHP Native project designed to provide a comprehensive solution for ma
 ### Project Tree
 ```
 uas
+├─ .github
+│  └─ workflows
+│     └─ CI.yml
 ├─ .gitignore
 ├─ .htaccess
 ├─ composer.json
 ├─ composer.lock
 ├─ index.php
 ├─ phpunit.xml
+├─ pint.json
+├─ postman
+│  ├─ Pemrograman Web 1 - UAS.postman_collection.json
+│  └─ Pemrograman Web 1 - UAS.postman_environment.json
 ├─ README.md
 ├─ src
 │  ├─ Application
@@ -185,11 +192,13 @@ uas
   - The core backend logic is implemented using PHP Native, following a clean architecture pattern.
   - JWT-based authentication system is functional.
   - Database schema (`train_travel_db.sql`) and configurations are complete.
-  - CRUD operations for users, trains, routes, and tickets are operational.
+  - CRUD operations for users are operational.
   - PHPUnit tests are written for entities and use cases.
   - File structure is organized across Domain, Application, Infrastructure, and Presentation layers.
 
 ### 🛠️ Ongoing Updates
+- **CRUD Operations**
+  - Implementing trains, routes, and tickets
 - **Presentation Layer**:
   - Currently being updated locally to improve user interface and experience.
   - Pages for ticket booking, user profile, and admin dashboard are under construction.
@@ -209,4 +218,3 @@ uas
   - Reports for admins and staff to track bookings and revenue.
 
 ---
-
