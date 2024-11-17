@@ -57,7 +57,8 @@ class UserController
             $user->idNumber = $data['id_number'] ?? $user->idNumber;
             $user->name = $data['name'] ?? $user->name;
             $user->email = $data['email'] ?? $user->email;
-            $user->password = password_hash($password, PASSWORD_DEFAULT);;
+            $user->password = password_hash($password, PASSWORD_DEFAULT);
+            ;
             $user->role = $data['role'] ?? $user->role;
 
             $this->userUseCase->updateUser($user);
