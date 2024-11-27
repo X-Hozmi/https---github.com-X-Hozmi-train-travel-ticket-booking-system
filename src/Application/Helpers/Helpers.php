@@ -26,7 +26,7 @@ class Helpers
      * @param int|null $value
      * @return bool
      */
-    public function foreignKeyExists(string $table, string $column, ?int $value): bool
+    public static function foreignKeyExists(string $table, string $column, ?int $value): bool
     {
         if (is_null($value)) {
             return true;

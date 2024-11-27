@@ -12,7 +12,6 @@ class DatabaseConnection
     public static function getConnection(): PDO
     {
         if (self::$instance === null) {
-            require_once __DIR__ . '/../../Application/Helpers/Helpers.php';
             $config = include __DIR__ . '/../Configs/database.php';
             try {
                 self::$instance = new PDO(

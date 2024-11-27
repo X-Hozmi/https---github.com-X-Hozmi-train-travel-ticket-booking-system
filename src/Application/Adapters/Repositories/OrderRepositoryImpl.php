@@ -18,7 +18,7 @@ class OrderRepositoryImpl implements OrderRepositoryInterface
 
     public function show(): array
     {
-        $sql = 'SELECT * FROM orders';
+        $sql = 'SELECT * FROM orders WHERE is_deleted = 0';
         $stmt = $this->db->query($sql);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }

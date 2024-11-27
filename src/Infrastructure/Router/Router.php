@@ -51,6 +51,14 @@ class Router
         error_log('Requested Method: ' . $method);
         error_log('Requested Path: ' . $path);
 
+        $isApiRoute = strpos($path, '/api/') === 0;
+
+        if ($isApiRoute) {
+            header('Content-Type: application/json');
+        } else {
+            header('Content-Type: text/html; charset=UTF-8');
+        }
+
         foreach ($this->routes as $route) {
             $pattern = $this->convertPathToRegex($route['path']);
             error_log('Checking Route: ' . $route['path'] . ' with pattern: ' . $pattern);
@@ -74,13 +82,23 @@ class Router
                     return;
                 } catch (\Throwable $e) {
                     error_log('Error executing controller: ' . $e->getMessage());
-                    ResponseService::internalServerError($e->getMessage());
+                    if ($isApiRoute) {
+                        ResponseService::internalServerError($e->getMessage());
+                    } else {
+                        echo '<h1>Error</h1>';
+                        echo '<p>' . htmlspecialchars($e->getMessage()) . '</p>';
+                    }
                 }
             }
         }
 
         error_log('No matching route found');
-        ResponseService::notFound('No matching route found');
+        if ($isApiRoute) {
+            ResponseService::notFound('No matching route found');
+        } else {
+            header('HTTP/1.0 404 Not Found');
+            echo '<h1>404 Page Not Found</h1>';
+        }
     }
 
     private function convertPathToRegex(string $path): string

@@ -14,6 +14,7 @@ use Src\Application\Adapters\Controllers\TrainController;
 use Src\Application\Adapters\Controllers\UserController;
 use Src\Application\Middlewares\AuthMiddleware;
 use Src\Infrastructure\Router\Router;
+use Src\Presentation\Controllers\WebHomeController;
 
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
@@ -32,8 +33,9 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 $router = new Router();
-$uri = '/Pem_Web_1/uas';
+$uri = '';
 
+// Back-End Routes
 $router->post($uri . '/api/auth/login', [AuthController::class, 'login']);
 $router->post($uri . '/api/auth/register', [AuthController::class, 'register']);
 $router->put($uri . '/api/auth/refresh', [AuthController::class, 'refresh']);
@@ -85,5 +87,8 @@ $router->get($uri . '/api/trains/{id}', [TrainController::class, 'show'], AuthMi
 $router->post($uri . '/api/trains', [TrainController::class, 'store'], AuthMiddleware::class);
 $router->put($uri . '/api/trains/{id}', [TrainController::class, 'update'], AuthMiddleware::class);
 $router->delete($uri . '/api/trains/{id}', [TrainController::class, 'delete'], AuthMiddleware::class);
+
+// Front-End Routes
+$router->get($uri . '/', [WebHomeController::class, 'index']);
 
 $router->resolve();

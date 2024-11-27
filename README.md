@@ -32,23 +32,28 @@ This is a PHP Native project designed to provide a comprehensive solution for ma
 ## Installation Guide
 
 ### Prerequisites
+
 - PHP >= 8.0
 - Composer
 - MySQL >= 5.7
 - Web server (Apache or Nginx)
 
 ### Steps
+
 1. Clone this repository:
+
    ```bash
    git clone https://github.com/X-Hozmi/train-travel-ticket-booking-system.git
    ```
 
 2. Navigate to the project directory:
+
    ```bash
    cd train-travel-ticket-booking-system
    ```
 
 3. Navigate to the project directory:
+
    ```bash
    composer install
    ```
@@ -58,11 +63,12 @@ This is a PHP Native project designed to provide a comprehensive solution for ma
    - Update the database configuration in `src/Infrastructure/Configs/database.php` with your credentials
 
 5. Start the server:
+
    ```bash
    php -S localhost:8000
    ```
 
-6. Access the application via http://localhost:8000 in your web browser
+6. Access the application via <http://localhost:8000> in your web browser
 
 ---
 
@@ -76,8 +82,47 @@ This is a PHP Native project designed to provide a comprehensive solution for ma
 
 ---
 
+## Version History
+
+### 🚀 Initial Development Phase
+
+- **Date**: November 2024 (Ongoing)
+- **Current Status**: *In Development*
+  - The core backend logic is implemented using PHP Native, following a clean architecture pattern.
+  - JWT-based authentication system is functional.
+  - Database schema (`train_travel_db.sql`) and configurations are complete.
+  - CRUD operations for users are operational.
+  - PHPUnit tests are written for entities and use cases.
+  - File structure is organized across Domain, Application, Infrastructure, and Presentation layers.
+
+### 🛠️ Ongoing Updates
+
+- **CRUD Operations**
+  - Implementing trains, routes, and tickets
+- **Presentation Layer**:
+  - Currently being updated locally to improve user interface and experience.
+  - Pages for ticket booking, user profile, and admin dashboard are under construction.
+- **Invoice Generation**:
+  - PDF generation for invoices is in progress.
+  - Functionality for customizing invoice templates is under consideration.
+
+### 🔮 Future Plans
+
+- **Integration with Payment Gateway**:
+  - Adding support for external payment providers (e.g., PayPal, Stripe).
+- **Mobile Responsiveness**:
+  - Enhancing the frontend to ensure compatibility with mobile devices.
+- **Deployment**:
+  - Preparing the application for deployment on a live server.
+- **Additional Features**:
+  - Notifications for booking confirmations and updates.
+  - Reports for admins and staff to track bookings and revenue.
+
+---
+
 ### Project Tree
-```
+
+```text
 uas
 ├─ .github
 │  └─ workflows
@@ -118,7 +163,8 @@ uas
 │  │  ├─ Helpers
 │  │  │  └─ Helpers.php
 │  │  ├─ Middlewares
-│  │  │  └─ AuthMiddleware.php
+│  │  │  ├─ AuthMiddleware.php
+│  │  │  └─ WebAuthMiddleware.php
 │  │  └─ Services
 │  │     ├─ JWTService.php
 │  │     └─ ResponseService.php
@@ -161,7 +207,35 @@ uas
 │  │     └─ Router.php
 │  └─ Presentation
 │     ├─ Assets
-│     └─ Pages
+│     │  ├─ css
+│     │  │  ├─ auth.css
+│     │  │  └─ style.css
+│     │  └─ img
+│     │     ├─ header-bg.jpg
+│     │     ├─ menu
+│     │     │  └─ 1.jpg
+│     │     ├─ produk
+│     │     │  └─ 1.jpg
+│     │     ├─ starboy.jpg
+│     │     ├─ tentang-kami.jpg
+│     │     ├─ train-modern.jpg
+│     │     ├─ wallpaperflare.com_wallpaper(1).jpg
+│     │     └─ yukino.jpg
+│     ├─ Controllers
+│     │  ├─ WebHomeController.php
+│     │  └─ WebTrainController.php
+│     └─ Views
+│        ├─ Templates
+│        │  ├─ home
+│        │  │  ├─ index.php
+│        │  │  └─ js
+│        │  │     ├─ auth.js
+│        │  │     └─ script.js
+│        │  ├─ layouts
+│        │  │  └─ app.php
+│        │  └─ trains
+│        │     └─ index.php
+│        └─ View.php
 └─ tests
    ├─ Helper
    ├─ Integration
@@ -181,40 +255,3 @@ uas
          │  └─ UserTest.php
          └─ UseCases
 ```
-
----
-
-## Version History
-
-### 🚀 Initial Development Phase
-- **Date**: November 2024 (Ongoing)
-- **Current Status**: *In Development*
-  - The core backend logic is implemented using PHP Native, following a clean architecture pattern.
-  - JWT-based authentication system is functional.
-  - Database schema (`train_travel_db.sql`) and configurations are complete.
-  - CRUD operations for users are operational.
-  - PHPUnit tests are written for entities and use cases.
-  - File structure is organized across Domain, Application, Infrastructure, and Presentation layers.
-
-### 🛠️ Ongoing Updates
-- **CRUD Operations**
-  - Implementing trains, routes, and tickets
-- **Presentation Layer**:
-  - Currently being updated locally to improve user interface and experience.
-  - Pages for ticket booking, user profile, and admin dashboard are under construction.
-- **Invoice Generation**:
-  - PDF generation for invoices is in progress.
-  - Functionality for customizing invoice templates is under consideration.
-
-### 🔮 Future Plans
-- **Integration with Payment Gateway**:
-  - Adding support for external payment providers (e.g., PayPal, Stripe).
-- **Mobile Responsiveness**:
-  - Enhancing the frontend to ensure compatibility with mobile devices.
-- **Deployment**:
-  - Preparing the application for deployment on a live server.
-- **Additional Features**:
-  - Notifications for booking confirmations and updates.
-  - Reports for admins and staff to track bookings and revenue.
-
----
