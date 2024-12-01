@@ -14,7 +14,9 @@ use Src\Application\Adapters\Controllers\TrainController;
 use Src\Application\Adapters\Controllers\UserController;
 use Src\Application\Middlewares\AuthMiddleware;
 use Src\Infrastructure\Router\Router;
+use Src\Presentation\Controllers\WebDashboardController;
 use Src\Presentation\Controllers\WebHomeController;
+use Src\Presentation\Controllers\AuthController as WebAuthController;
 
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
@@ -90,5 +92,12 @@ $router->delete($uri . '/api/trains/{id}', [TrainController::class, 'delete'], A
 
 // Front-End Routes
 $router->get($uri . '/', [WebHomeController::class, 'index']);
+
+//AUTH
+$router->get($uri . '/login', [WebAuthController::class, 'indexLogin']);
+$router->get($uri . '/register', [WebAuthController::class, 'indexRegister']);
+
+//Dashboard
+$router->get($uri . '/dashboard', [WebDashboardController::class, 'index']);
 
 $router->resolve();

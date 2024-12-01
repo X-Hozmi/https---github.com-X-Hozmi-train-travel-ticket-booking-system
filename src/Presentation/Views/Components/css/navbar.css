@@ -1,0 +1,28 @@
+.navbar {
+    display: flex;
+    background-color: white;
+    border-bottom: 1px solid rgb(212, 212, 212);
+    width: 100%;
+    height: 80px;
+    padding: 0 50px;
+    align-items: center;
+}
+
+.navbar img {
+    width: 70px;
+    height: auto;
+    object-fit: contain;
+}
+
+.navs {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-left: auto;
+}
+
+.navs a {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
