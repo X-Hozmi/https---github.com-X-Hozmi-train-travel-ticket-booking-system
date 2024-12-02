@@ -4,7 +4,8 @@ namespace Src\Presentation\Controllers;
 
 use Src\Presentation\Views\View;
 
-class AuthController {
+class WebAuthController
+{
     public function indexLogin()
     {
         View::make('auth.login')->render();
