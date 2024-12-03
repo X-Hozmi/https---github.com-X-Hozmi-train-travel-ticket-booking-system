@@ -17,6 +17,7 @@ use Src\Infrastructure\Router\Router;
 use Src\Presentation\Controllers\WebDashboardController;
 use Src\Presentation\Controllers\WebHomeController;
 use Src\Presentation\Controllers\AuthController as WebAuthController;
+use Src\Presentation\Controllers\WebTicketController;
 
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
@@ -99,5 +100,8 @@ $router->get($uri . '/register', [WebAuthController::class, 'indexRegister']);
 
 //Dashboard
 $router->get($uri . '/dashboard', [WebDashboardController::class, 'index']);
+
+//reservation ticket
+$router->get($uri . '/reservation', [WebTicketController::class, 'index']);
 
 $router->resolve();

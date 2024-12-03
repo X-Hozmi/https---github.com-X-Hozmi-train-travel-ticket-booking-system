@@ -8,7 +8,7 @@
         include("src/Presentation/Views/Templates/cdn.php");
     ?>
 
-    <title>Auth | Sign In</title>
+    <title>Dashboard</title>
 
     <style>
         .content-container {
@@ -181,6 +181,25 @@
             color: white;
             margin: 20px 0;
             cursor: pointer;
+            transition: all 0.1s ease-in-out;
+            border: 2px solid transparent;
+        }
+
+        .tickets:hover {
+            background-color: white;
+            color: #007bff;
+            border: 2px solid #007bff;
+        }
+
+        .tickets:hover .train-name,
+        .tickets:hover .train-type,
+        .tickets:hover .timetable-station,
+        .tickets:hover .timetable-hour,
+        .tickets:hover .timetample-date,
+        .tickets:hover .price,
+        .tickets:hover .ticket-status,
+        .tickets:hover .duration {
+            color: #007bff;
         }
 
         .tickets .ticket-table {
