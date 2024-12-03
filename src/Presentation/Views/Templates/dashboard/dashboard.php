@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <?php 
-        include("src/Presentation/Views/Templates/cdn.php");
+    <?php
+        include('src/Presentation/Views/Templates/cdn.php');
     ?>
 
     <title>Dashboard</title>
@@ -277,7 +277,7 @@
 </head>
 <body>
     <div class="container">
-        <?php include("src/Presentation/Views/Components/navbar.php") ?>
+        <?php include('src/Presentation/Views/Components/navbar.php') ?>
 
         <div class="content-container">
             <div class="content">

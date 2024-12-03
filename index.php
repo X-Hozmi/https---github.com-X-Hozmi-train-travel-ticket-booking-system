@@ -14,9 +14,9 @@ use Src\Application\Adapters\Controllers\TrainController;
 use Src\Application\Adapters\Controllers\UserController;
 use Src\Application\Middlewares\AuthMiddleware;
 use Src\Infrastructure\Router\Router;
+use Src\Presentation\Controllers\WebAuthController;
 use Src\Presentation\Controllers\WebDashboardController;
 use Src\Presentation\Controllers\WebHomeController;
-use Src\Presentation\Controllers\AuthController as WebAuthController;
 use Src\Presentation\Controllers\WebTicketController;
 
 $dotenv = Dotenv::createImmutable(__DIR__);
@@ -36,70 +36,67 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 $router = new Router();
-$uri = '';
 
 // Back-End Routes
-$router->post($uri . '/api/auth/login', [AuthController::class, 'login']);
-$router->post($uri . '/api/auth/register', [AuthController::class, 'register']);
-$router->put($uri . '/api/auth/refresh', [AuthController::class, 'refresh']);
-$router->delete($uri . '/api/auth/logout', [AuthController::class, 'logout'], AuthMiddleware::class);
+$router->post('/api/auth/login', [AuthController::class, 'login']);
+$router->post('/api/auth/register', [AuthController::class, 'register']);
+$router->put('/api/auth/refresh', [AuthController::class, 'refresh']);
+$router->delete('/api/auth/logout', [AuthController::class, 'logout'], AuthMiddleware::class);
 
-$router->get($uri . '/api/users', [UserController::class, 'index'], AuthMiddleware::class);
-$router->get($uri . '/api/users/{id}', [UserController::class, 'show'], AuthMiddleware::class);
-$router->put($uri . '/api/users/{id}', [UserController::class, 'update'], AuthMiddleware::class);
-$router->delete($uri . '/api/users/{id}', [UserController::class, 'delete'], AuthMiddleware::class);
+$router->get('/api/users', [UserController::class, 'index'], AuthMiddleware::class);
+$router->get('/api/users/{id}', [UserController::class, 'show'], AuthMiddleware::class);
+$router->put('/api/users/{id}', [UserController::class, 'update'], AuthMiddleware::class);
+$router->delete('/api/users/{id}', [UserController::class, 'delete'], AuthMiddleware::class);
 
-$router->get($uri . '/api/orders', [OrderController::class, 'index'], AuthMiddleware::class);
-$router->get($uri . '/api/orders/{id}', [OrderController::class, 'show'], AuthMiddleware::class);
-$router->post($uri . '/api/orders', [OrderController::class, 'store'], AuthMiddleware::class);
-$router->put($uri . '/api/orders/{id}', [OrderController::class, 'update'], AuthMiddleware::class);
-$router->delete($uri . '/api/orders/{id}', [OrderController::class, 'delete'], AuthMiddleware::class);
+$router->get('/api/orders', [OrderController::class, 'index'], AuthMiddleware::class);
+$router->get('/api/orders/{id}', [OrderController::class, 'show'], AuthMiddleware::class);
+$router->post('/api/orders', [OrderController::class, 'store'], AuthMiddleware::class);
+$router->put('/api/orders/{id}', [OrderController::class, 'update'], AuthMiddleware::class);
+$router->delete('/api/orders/{id}', [OrderController::class, 'delete'], AuthMiddleware::class);
 
-$router->get($uri . '/api/payments', [PaymentController::class, 'index'], AuthMiddleware::class);
-$router->get($uri . '/api/payments/{id}', [PaymentController::class, 'show'], AuthMiddleware::class);
-$router->post($uri . '/api/payments', [PaymentController::class, 'store'], AuthMiddleware::class);
-$router->put($uri . '/api/payments/{id}', [PaymentController::class, 'update'], AuthMiddleware::class);
-$router->delete($uri . '/api/payments/{id}', [PaymentController::class, 'delete'], AuthMiddleware::class);
+$router->get('/api/payments', [PaymentController::class, 'index'], AuthMiddleware::class);
+$router->get('/api/payments/{id}', [PaymentController::class, 'show'], AuthMiddleware::class);
+$router->post('/api/payments', [PaymentController::class, 'store'], AuthMiddleware::class);
+$router->put('/api/payments/{id}', [PaymentController::class, 'update'], AuthMiddleware::class);
+$router->delete('/api/payments/{id}', [PaymentController::class, 'delete'], AuthMiddleware::class);
 
-$router->get($uri . '/api/routes', [RouteController::class, 'index'], AuthMiddleware::class);
-$router->get($uri . '/api/routes/{id}', [RouteController::class, 'show'], AuthMiddleware::class);
-$router->post($uri . '/api/routes', [RouteController::class, 'store'], AuthMiddleware::class);
-$router->put($uri . '/api/routes/{id}', [RouteController::class, 'update'], AuthMiddleware::class);
-$router->delete($uri . '/api/routes/{id}', [RouteController::class, 'delete'], AuthMiddleware::class);
+$router->get('/api/routes', [RouteController::class, 'index'], AuthMiddleware::class);
+$router->get('/api/routes/{id}', [RouteController::class, 'show'], AuthMiddleware::class);
+$router->post('/api/routes', [RouteController::class, 'store'], AuthMiddleware::class);
+$router->put('/api/routes/{id}', [RouteController::class, 'update'], AuthMiddleware::class);
+$router->delete('/api/routes/{id}', [RouteController::class, 'delete'], AuthMiddleware::class);
 
-$router->get($uri . '/api/seats', [SeatController::class, 'index'], AuthMiddleware::class);
-$router->get($uri . '/api/seats/{id}', [SeatController::class, 'show'], AuthMiddleware::class);
-$router->post($uri . '/api/seats', [SeatController::class, 'store'], AuthMiddleware::class);
-$router->put($uri . '/api/seats/{id}', [SeatController::class, 'update'], AuthMiddleware::class);
-$router->delete($uri . '/api/seats/{id}', [SeatController::class, 'delete'], AuthMiddleware::class);
+$router->get('/api/seats', [SeatController::class, 'index'], AuthMiddleware::class);
+$router->get('/api/seats/{id}', [SeatController::class, 'show'], AuthMiddleware::class);
+$router->post('/api/seats', [SeatController::class, 'store'], AuthMiddleware::class);
+$router->put('/api/seats/{id}', [SeatController::class, 'update'], AuthMiddleware::class);
+$router->delete('/api/seats/{id}', [SeatController::class, 'delete'], AuthMiddleware::class);
 
-$router->get($uri . '/api/stations', [StationController::class, 'index'], AuthMiddleware::class);
-$router->get($uri . '/api/stations/{id}', [StationController::class, 'show'], AuthMiddleware::class);
-$router->post($uri . '/api/stations', [StationController::class, 'store'], AuthMiddleware::class);
-$router->put($uri . '/api/stations/{id}', [StationController::class, 'update'], AuthMiddleware::class);
-$router->delete($uri . '/api/stations/{id}', [StationController::class, 'delete'], AuthMiddleware::class);
+$router->get('/api/stations', [StationController::class, 'index'], AuthMiddleware::class);
+$router->get('/api/stations/{id}', [StationController::class, 'show'], AuthMiddleware::class);
+$router->post('/api/stations', [StationController::class, 'store'], AuthMiddleware::class);
+$router->put('/api/stations/{id}', [StationController::class, 'update'], AuthMiddleware::class);
+$router->delete('/api/stations/{id}', [StationController::class, 'delete'], AuthMiddleware::class);
 
-$router->get($uri . '/api/times', [TimeController::class, 'index'], AuthMiddleware::class);
-$router->get($uri . '/api/times/{id}', [TimeController::class, 'show'], AuthMiddleware::class);
-$router->post($uri . '/api/times', [TimeController::class, 'store'], AuthMiddleware::class);
-$router->put($uri . '/api/times/{id}', [TimeController::class, 'update'], AuthMiddleware::class);
-$router->delete($uri . '/api/times/{id}', [TimeController::class, 'delete'], AuthMiddleware::class);
+$router->get('/api/times', [TimeController::class, 'index'], AuthMiddleware::class);
+$router->get('/api/times/{id}', [TimeController::class, 'show'], AuthMiddleware::class);
+$router->post('/api/times', [TimeController::class, 'store'], AuthMiddleware::class);
+$router->put('/api/times/{id}', [TimeController::class, 'update'], AuthMiddleware::class);
+$router->delete('/api/times/{id}', [TimeController::class, 'delete'], AuthMiddleware::class);
 
-$router->get($uri . '/api/trains', [TrainController::class, 'index'], AuthMiddleware::class);
-$router->get($uri . '/api/trains/{id}', [TrainController::class, 'show'], AuthMiddleware::class);
-$router->post($uri . '/api/trains', [TrainController::class, 'store'], AuthMiddleware::class);
-$router->put($uri . '/api/trains/{id}', [TrainController::class, 'update'], AuthMiddleware::class);
-$router->delete($uri . '/api/trains/{id}', [TrainController::class, 'delete'], AuthMiddleware::class);
+$router->get('/api/trains', [TrainController::class, 'index'], AuthMiddleware::class);
+$router->get('/api/trains/{id}', [TrainController::class, 'show'], AuthMiddleware::class);
+$router->post('/api/trains', [TrainController::class, 'store'], AuthMiddleware::class);
+$router->put('/api/trains/{id}', [TrainController::class, 'update'], AuthMiddleware::class);
+$router->delete('/api/trains/{id}', [TrainController::class, 'delete'], AuthMiddleware::class);
 
 // Front-End Routes
-$router->get($uri . '/', [WebHomeController::class, 'index']);
+$router->get('/', [WebHomeController::class, 'index']);
 
-//AUTH
-$router->get($uri . '/login', [WebAuthController::class, 'indexLogin']);
-$router->get($uri . '/register', [WebAuthController::class, 'indexRegister']);
+$router->get('/login', [WebAuthController::class, 'indexLogin']);
+$router->get('/register', [WebAuthController::class, 'indexRegister']);
 
-//Dashboard
-$router->get($uri . '/dashboard', [WebDashboardController::class, 'index']);
+$router->get('/dashboard', [WebDashboardController::class, 'index']);
 
 //reservation ticket
 $router->get($uri . '/reservation', [WebTicketController::class, 'index']);
