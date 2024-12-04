@@ -42,7 +42,12 @@ class AuthUseCase
             'refresh_token' => $refreshToken,
             'user' => [
                 'id' => $user['id'],
+                'id_number' => $user['id_number'],
+                'name' => $user['name'],
+                'address' => $user['address'],
                 'username' => $user['username'],
+                'phone_number' => $user['phone_number'],
+                'email' => $user['email'],
                 'role' => $user['role'],
             ],
         ];

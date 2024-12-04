@@ -42,6 +42,54 @@ class RouteRepositoryImpl implements RouteRepositoryInterface
         return null;
     }
 
+    public function find(array $data): array
+    {
+        $source = $data['source'];
+        $destination = $data['destination'];
+        $result = [
+            'status' => true,
+            'message' => 'Stasiun ditemukan',
+        ];
+
+        $sqlAsal = 'SELECT * FROM routes WHERE source = ? AND is_deleted = 0';
+        $stmt = $this->db->prepare($sqlAsal);
+        $stmt->execute([$source]);
+        $dataAsal = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (empty($dataAsal)) {
+            return [
+                'status' => false,
+                'message' => 'Stasiun asal tidak ditemukan',
+            ];
+        }
+
+        $sqlTujuan = 'SELECT * FROM routes WHERE destination = ? AND is_deleted = 0';
+        $stmt = $this->db->prepare($sqlTujuan);
+        $stmt->execute([$destination]);
+        $dataTujuan = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (empty($dataTujuan)) {
+            return [
+                'status' => false,
+                'message' => 'Stasiun tujuan tidak ditemukan',
+            ];
+        }
+
+        $sqlKereta = "SELECT a.*, b.arrival, b.departure FROM trains a LEFT JOIN times b ON a.time_id = b.id WHERE a.route_id = ? AND a.status = 'active' AND a.is_deleted = 0";
+        $stmt = $this->db->prepare($sqlKereta);
+        $stmt->execute([$dataTujuan['id']]);
+        $dataKereta = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (empty($dataKereta)) {
+            return [
+                'status' => false,
+                'message' => 'Belum ada kereta untuk rute ini',
+            ];
+        }
+
+        return array_merge($result, ['data' => ['route' => $dataTujuan, 'kereta' => $dataKereta]]);
+    }
+
     public function save(Route $route): bool
     {
         $sql = 'INSERT INTO routes (source, destination) VALUES (?, ?)';

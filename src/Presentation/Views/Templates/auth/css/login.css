@@ -1,6 +1,6 @@
 .content-container {
     height: calc(100vh - 80px);
-    background-image: url('/uas/src/Presentation/Assets/img/cc-203.jpg');
+    background-image: url('/src/Presentation/Assets/img/cc-203.jpg');
     /* Ganti dengan path gambar Anda */
     background-size: cover;
     /* Agar gambar menutupi seluruh area */

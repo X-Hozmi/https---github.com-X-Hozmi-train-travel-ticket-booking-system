@@ -43,6 +43,23 @@ class RouteController
         }
     }
 
+    public function checkRoute()
+    {
+        try {
+            $data = json_decode(file_get_contents('php://input'), true);
+
+            $result = $this->routeUseCase->checkRoute($data);
+
+            if ((bool) $result['status']) {
+                ResponseService::success($result['data'], $result['message']);
+            } else {
+                ResponseService::error($result['message']);
+            }
+        } catch (\Exception $e) {
+            ResponseService::error($e->getMessage());
+        }
+    }
+
     public function store()
     {
         try {

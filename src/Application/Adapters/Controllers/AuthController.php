@@ -44,17 +44,20 @@ class AuthController
             if (
                 ! isset($data['username']) || ! isset($data['password']) ||
                 ! isset($data['email']) || ! isset($data['name']) ||
-                ! isset($data['id_number'])
+                ! isset($data['id_number']) || ! isset($data['address']) ||
+                ! isset($data['phone_number'])
             ) {
                 throw new \Exception('Missing required fields');
             }
 
             $user = new User();
-            $user->username = $data['username'];
-            $user->password = $data['password'];
-            $user->email = $data['email'];
-            $user->name = $data['name'];
             $user->idNumber = $data['id_number'];
+            $user->name = $data['name'];
+            $user->address = $data['address'];
+            $user->username = $data['username'];
+            $user->phoneNumber = $data['phone_number'];
+            $user->email = $data['email'];
+            $user->password = $data['password'];
             $user->role = $data['role'] ?? 'client';
 
             $this->authUseCase->register($user);
