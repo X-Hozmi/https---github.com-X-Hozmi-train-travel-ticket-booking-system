@@ -24,8 +24,8 @@
                 <div class="card-column">
                     <div class="card">
                         <div class="card-title">
-                            <span class="title">Pemesanan Tiket</span>
-                            <span class="date-title">1 Desember 2024</span>
+                            <span class="title">Pemesanan</span>
+                            <span class="date-title">Data Pemesanan</span>
                         </div>
                         <div class="card-body">
                             <!-- Form kiri (col-5) -->
