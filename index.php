@@ -99,6 +99,6 @@ $router->get('/register', [WebAuthController::class, 'indexRegister']);
 $router->get('/dashboard', [WebDashboardController::class, 'index']);
 
 //reservation ticket
-$router->get($uri . '/reservation', [WebTicketController::class, 'index']);
+$router->get('/reservation', [WebTicketController::class, 'index']);
 
 $router->resolve();
