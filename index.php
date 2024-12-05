@@ -17,6 +17,7 @@ use Src\Infrastructure\Router\Router;
 use Src\Presentation\Controllers\WebAuthController;
 use Src\Presentation\Controllers\WebDashboardController;
 use Src\Presentation\Controllers\WebHomeController;
+use Src\Presentation\Controllers\WebInvoicePrinterController;
 use Src\Presentation\Controllers\WebTicketController;
 
 $dotenv = Dotenv::createImmutable(__DIR__);
@@ -101,5 +102,7 @@ $router->get('/dashboard', [WebDashboardController::class, 'index']);
 
 //reservation ticket
 $router->get('/reservation', [WebTicketController::class, 'index']);
+
+$router->get('/invoice/{id}', [WebInvoicePrinterController::class, 'index']);
 
 $router->resolve();

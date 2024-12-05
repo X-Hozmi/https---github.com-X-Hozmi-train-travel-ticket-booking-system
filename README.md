@@ -167,6 +167,7 @@ uas
 │  │  │  └─ WebAuthMiddleware.php
 │  │  └─ Services
 │  │     ├─ JWTService.php
+│  │     ├─ PDFService.php
 │  │     └─ ResponseService.php
 │  ├─ Domain
 │  │  ├─ Entities
@@ -208,33 +209,61 @@ uas
 │  └─ Presentation
 │     ├─ Assets
 │     │  ├─ css
-│     │  │  ├─ auth.css
 │     │  │  └─ style.css
 │     │  └─ img
+│     │     ├─ banisaleh-logo.jpeg
+│     │     ├─ cc-203-2.jpg
+│     │     ├─ cc-203.jpg
 │     │     ├─ header-bg.jpg
+│     │     ├─ logo-kai.jpg
 │     │     ├─ menu
 │     │     │  └─ 1.jpg
 │     │     ├─ produk
 │     │     │  └─ 1.jpg
-│     │     ├─ starboy.jpg
 │     │     ├─ tentang-kami.jpg
-│     │     ├─ train-modern.jpg
-│     │     ├─ wallpaperflare.com_wallpaper(1).jpg
-│     │     └─ yukino.jpg
+│     │     └─ train-modern.jpg
 │     ├─ Controllers
+│     │  ├─ WebAuthController.php
+│     │  ├─ WebDashboardController.php
 │     │  ├─ WebHomeController.php
-│     │  └─ WebTrainController.php
+│     │  └─ WebTicketController.php
 │     └─ Views
+│        ├─ Components
+│        │  ├─ css
+│        │  │  └─ navbar.css
+│        │  ├─ divider.php
+│        │  └─ navbar.php
+│        ├─ css
+│        │  └─ global.css
 │        ├─ Templates
+│        │  ├─ auth
+│        │  │  ├─ css
+│        │  │  │  ├─ login.css
+│        │  │  │  ├─ register.css
+│        │  │  │  └─ style.css
+│        │  │  ├─ js
+│        │  │  │  ├─ login.js
+│        │  │  │  ├─ register.js
+│        │  │  │  └─ showSwal.js
+│        │  │  ├─ login.php
+│        │  │  └─ register.php
+│        │  ├─ cdn.php
+│        │  ├─ dashboard
+│        │  │  ├─ css
+│        │  │  │  └─ style.css
+│        │  │  ├─ dashboard.php
+│        │  │  └─ js
+│        │  │     └─ dashboard.js
 │        │  ├─ home
 │        │  │  ├─ index.php
 │        │  │  └─ js
-│        │  │     ├─ auth.js
-│        │  │     └─ script.js
-│        │  ├─ layouts
-│        │  │  └─ app.php
-│        │  └─ trains
-│        │     └─ index.php
+│        │  │     └─ auth.js
+│        │  └─ reservation
+│        │     ├─ css
+│        │     │  └─ style.css
+│        │     ├─ js
+│        │     │  └─ ticket.js
+│        │     └─ ticket.php
 │        └─ View.php
 └─ tests
    ├─ Helper
