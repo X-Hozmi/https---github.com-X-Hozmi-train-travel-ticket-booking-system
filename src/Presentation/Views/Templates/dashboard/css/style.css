@@ -1,0 +1,261 @@
+.content-container {
+    /* height: calc(100vh - 80px); */
+    background-color: aliceblue;
+    background-size: cover; /* Agar gambar menutupi seluruh area */
+    background-position: center; /* Agar gambar terpusat di tengah */
+    background-repeat: no-repeat; /* Agar gambar tidak diulang */
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Horizontal centering */
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.card {
+    padding: 20px;
+    border-radius: 8px;
+    width: 70rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: #174592;
+    color: white;            
+}
+
+.card-title {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.title {
+    font-size: 30px;
+}
+
+.date-title {
+    font-size: 20px;
+}
+
+.card-title img {
+    height: 100px;
+    width: auto;
+    object-fit: cover;
+}
+
+.card-body {
+    display: flex;
+    flex-wrap: wrap; /* Membungkus elemen jika tidak cukup ruang */
+    gap: 20px; /* Jarak antar elemen */
+}
+
+.search-button {
+    font-size: 16px;
+    height: 2.5rem;
+    border-radius: 4px;
+    background-color: #eb6923; /* Warna kuning-oranye utama */
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Transisi halus untuk perubahan warna */
+}
+
+.search-button:hover {
+    background-color: #d95f20; /* Warna kuning-oranye sedikit lebih gelap saat hover */
+}
+
+.search-button:active {
+    background-color: #c4541c; /* Warna kuning-oranye lebih gelap saat diklik */
+}
+
+
+.form-control {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.form-control.half { /* Setara dengan col-6 */
+    flex: 1 1 calc(50% - 20px); /* 50% lebar kartu dikurangi gap */
+}
+
+.form-control.third { /* Setara dengan col-3 */
+    flex: 1 1 calc(33.333% - 20px); /* 33.33% lebar kartu dikurangi gap */
+}
+
+.form-control.full { /* Setara dengan col-12 */
+    flex: 1 1 100%; /* Lebar penuh */
+}
+
+input {
+    width: 100%; /* Pastikan ukurannya sesuai */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    outline: none;
+    height: 40px;
+    transition: all 0.3s ease;
+}        
+
+input:focus {
+    border-color: #007bff; /* Warna biru pada border */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Efek shadow halus */
+}
+
+input:not(:focus) {
+    border-color: white; /* Warna border default */
+    background-color: white; /* Background default */
+    box-shadow: none; /* Menghilangkan shadow saat tidak fokus */
+}
+
+.destination {
+    display: flex;
+    align-items: center;
+    background-color: #eb6923;
+    color: white;
+    margin-top: 10px;
+    width: 100%;
+    justify-content: center;
+    border-radius: 8px;
+    height: 60px;
+    flex-direction: column;
+    padding: 0 30px;
+}
+
+.station {
+    color: white;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.ticket-container {
+    margin-top: 20px;
+    width: 100%;
+}
+
+/* Header Table */
+.ticket-header {
+    background-color: #174592;
+    padding: 10px 20px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.ticket-header .ticket-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.ticket-header th {
+    text-align: left;
+    padding: 10px;
+    color: white;
+    font-size: 16px;
+}
+
+/* Tickets Table */
+.tickets {
+    background-color: #007bff;
+    border-radius: 8px;
+    padding: 10px;
+    color: white;
+    margin: 20px 0;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+    border: 2px solid transparent;
+}
+
+.tickets:hover {
+    background-color: white;
+    color: #007bff;
+    border: 2px solid #007bff;
+}
+
+.tickets:hover .train-name,
+.tickets:hover .train-type,
+.tickets:hover .timetable-station,
+.tickets:hover .timetable-hour,
+.tickets:hover .timetample-date,
+.tickets:hover .price,
+.tickets:hover .ticket-status,
+.tickets:hover .duration {
+    color: #007bff;
+}
+
+.tickets .ticket-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tickets td {
+    padding: 10px;
+    vertical-align: top;
+}
+
+/* Train Details */
+.train {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.train-name {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.train-type {
+    font-size: 14px;
+}
+
+/* Timetable Details */
+.timetable {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.timetable-station {
+    font-weight: bold;
+}
+
+.timetable-hour {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.timetample-date {
+    font-size: 14px;
+    color: white;
+}
+
+/* Duration */
+.duration {
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Ticket Info */
+.ticket-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.price {
+    font-size: 20px;
+    font-weight: bold;
+    color: orange;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.ticket-status {
+    font-size: 14px;
+    font-weight: bold;
+}

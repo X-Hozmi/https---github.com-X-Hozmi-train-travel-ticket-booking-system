@@ -3,8 +3,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const validators = {
         name: (value) => value.trim().length > 0,
+        address: (value) => value.trim().length > 0,
         id_number: (value) => /^\d{10,20}$/.test(value),
         username: (value) => value.trim().length >= 3 && /^[a-zA-Z0-9_]+$/.test(value),
+        phone_number: (value) => /^\d{10,20}$/.test(value),
         email: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
         password: (value) => value.length >= 8,
         password_repeat: (value) => value === document.getElementById('password').value
@@ -12,8 +14,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const errorMessages = {
         name: 'Name is required',
+        address: 'Address is required',
         id_number: 'ID Number must be between 10-20 digits',
         username: 'Username must be at least 3 characters, alphanumeric or underscore',
+        phone_number: 'Invalid phone number format',
         email: 'Invalid email format',
         password: 'Password must be at least 8 characters',
         password_repeat: 'Passwords do not match'

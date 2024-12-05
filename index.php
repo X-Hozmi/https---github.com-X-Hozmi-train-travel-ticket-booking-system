@@ -62,6 +62,7 @@ $router->delete('/api/payments/{id}', [PaymentController::class, 'delete'], Auth
 
 $router->get('/api/routes', [RouteController::class, 'index'], AuthMiddleware::class);
 $router->get('/api/routes/{id}', [RouteController::class, 'show'], AuthMiddleware::class);
+$router->post('/api/routes/check', [RouteController::class, 'checkRoute'], AuthMiddleware::class);
 $router->post('/api/routes', [RouteController::class, 'store'], AuthMiddleware::class);
 $router->put('/api/routes/{id}', [RouteController::class, 'update'], AuthMiddleware::class);
 $router->delete('/api/routes/{id}', [RouteController::class, 'delete'], AuthMiddleware::class);

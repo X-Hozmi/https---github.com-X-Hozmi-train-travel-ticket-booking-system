@@ -24,6 +24,11 @@ class RouteUseCase
         return $this->routeRepository->findById($id);
     }
 
+    public function checkRoute(array $data): array
+    {
+        return $this->routeRepository->find($data);
+    }
+
     public function createRoute(Route $route): bool
     {
         return $this->routeRepository->save($route);

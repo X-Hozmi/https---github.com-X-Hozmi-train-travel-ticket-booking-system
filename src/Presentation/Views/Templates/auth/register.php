@@ -36,12 +36,20 @@
                                 <input type="text" id="name" name="name">
                             </div>
                             <div class="form-control">
+                                <label for="address">Address</label>
+                                <input type="text" id="address" name="address">
+                            </div>
+                            <div class="form-control">
                                 <label for="id_number">ID Number (KTP)</label>
                                 <input type="text" id="id_number" name="id_number">
                             </div>
                             <div class="form-control">
                                 <label for="username">Username</label>
                                 <input type="text" id="username" name="username">
+                            </div>
+                            <div class="form-control">
+                                <label for="phone_number">Phone Number</label>
+                                <input type="text" id="phone_number" name="phone_number">
                             </div>
                             <div class="form-control">
                                 <label for="email">Email</label>
