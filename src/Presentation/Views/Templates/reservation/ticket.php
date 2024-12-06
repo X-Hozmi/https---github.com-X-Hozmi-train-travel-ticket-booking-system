@@ -72,6 +72,10 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="seat-grid" style="display: flex; justify-content: center;">
+                        <?php include("src/Presentation/Views/Templates/select_seat/select_seat.php") ?>
+                    </div>
                 </div>
 
                 <!-- Price Summary -->
@@ -88,7 +92,7 @@
                         <span class="total-passanger">1 DEWASA</span>
                         <div class="passanger">
                             <div class="passanger-info">
-                                <span class="seat">LUX-1 , 2B</span>
+                                <span class="seat-info">LUX-1 , 2B</span>
                             </div>
                         </div>
                         <div class="train-destination">
@@ -119,6 +123,7 @@
                         </div>
                     </div>
                 </div>
+                
             </div>
         </div>
     </div>

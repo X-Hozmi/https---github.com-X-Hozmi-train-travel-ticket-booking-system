@@ -299,7 +299,7 @@ select:not(:focus), input:not(:focus) {
     align-items: center;
 }
 
-.seat {
+.seat-info {
     margin-left: auto;
     padding: 5px 10px;
     border-radius: 5px;

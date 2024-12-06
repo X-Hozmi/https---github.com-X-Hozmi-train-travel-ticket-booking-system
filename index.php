@@ -102,6 +102,7 @@ $router->get('/dashboard', [WebDashboardController::class, 'index']);
 
 //reservation ticket
 $router->get('/reservation', [WebTicketController::class, 'index']);
+$router->get('/seat', [WebDashboardController::class, 'showSeat']);
 
 $router->get('/invoice/{id}', [WebInvoicePrinterController::class, 'index']);
 

@@ -49,8 +49,8 @@
                                 <input type="number" id="infants" class="input-field" min="0">
                             </div>
                         </div>
-                        <button type="submit" class="search-button">Cari tiket</button>
                     </form>
+                    <button type="submit" class="search-button">Cari tiket</button>
                 </div>
                 <div class="destination">
                     <span class="station">BEKASI > SOLO BALAPAN</span>

@@ -22,6 +22,8 @@ class WebInvoicePrinterController
 
         $order = $this->orderUseCase->getOrderById($id);
 
+        $template = str_replace('{{ inv_number }}', $order->status, $template);
+
         PDFService::render($template);
     }
 }

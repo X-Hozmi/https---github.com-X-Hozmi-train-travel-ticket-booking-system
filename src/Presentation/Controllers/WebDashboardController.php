@@ -10,4 +10,9 @@ class WebDashboardController
     {
         View::make('dashboard.dashboard')->render();
     }
+
+    public function showSeat()
+    {
+        View::make('select_seat.select_seat')->render();
+    }
 }
