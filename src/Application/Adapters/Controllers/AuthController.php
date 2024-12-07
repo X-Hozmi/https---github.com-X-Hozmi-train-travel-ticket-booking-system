@@ -51,7 +51,7 @@ class AuthController
             }
 
             $user = new User();
-            $user->idNumber = $data['id_number'];
+            $user->idNumber = (int)$data['id_number'];
             $user->name = $data['name'];
             $user->address = $data['address'];
             $user->username = $data['username'];

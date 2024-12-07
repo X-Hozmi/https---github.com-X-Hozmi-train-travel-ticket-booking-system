@@ -16,7 +16,6 @@ use Src\Application\Middlewares\AuthMiddleware;
 use Src\Infrastructure\Router\Router;
 use Src\Presentation\Controllers\WebAuthController;
 use Src\Presentation\Controllers\WebDashboardController;
-use Src\Presentation\Controllers\WebHomeController;
 use Src\Presentation\Controllers\WebInvoicePrinterController;
 use Src\Presentation\Controllers\WebTicketController;
 
@@ -51,6 +50,7 @@ $router->delete('/api/users/{id}', [UserController::class, 'delete'], AuthMiddle
 
 $router->get('/api/orders', [OrderController::class, 'index'], AuthMiddleware::class);
 $router->get('/api/orders/{id}', [OrderController::class, 'show'], AuthMiddleware::class);
+$router->post('/api/orders/schedule', [OrderController::class, 'checkOrderSchedule'], AuthMiddleware::class);
 $router->post('/api/orders', [OrderController::class, 'store'], AuthMiddleware::class);
 $router->put('/api/orders/{id}', [OrderController::class, 'update'], AuthMiddleware::class);
 $router->delete('/api/orders/{id}', [OrderController::class, 'delete'], AuthMiddleware::class);
@@ -63,7 +63,7 @@ $router->delete('/api/payments/{id}', [PaymentController::class, 'delete'], Auth
 
 $router->get('/api/routes', [RouteController::class, 'index'], AuthMiddleware::class);
 $router->get('/api/routes/{id}', [RouteController::class, 'show'], AuthMiddleware::class);
-$router->post('/api/routes/check', [RouteController::class, 'checkRoute'], AuthMiddleware::class);
+$router->post('/api/routes/check', [RouteController::class, 'checkRoute']);
 $router->post('/api/routes', [RouteController::class, 'store'], AuthMiddleware::class);
 $router->put('/api/routes/{id}', [RouteController::class, 'update'], AuthMiddleware::class);
 $router->delete('/api/routes/{id}', [RouteController::class, 'delete'], AuthMiddleware::class);
@@ -93,12 +93,10 @@ $router->put('/api/trains/{id}', [TrainController::class, 'update'], AuthMiddlew
 $router->delete('/api/trains/{id}', [TrainController::class, 'delete'], AuthMiddleware::class);
 
 // Front-End Routes
-$router->get('/', [WebHomeController::class, 'index']);
+$router->get('/', [WebDashboardController::class, 'index']);
 
 $router->get('/login', [WebAuthController::class, 'indexLogin']);
 $router->get('/register', [WebAuthController::class, 'indexRegister']);
-
-$router->get('/dashboard', [WebDashboardController::class, 'index']);
 
 //reservation ticket
 $router->get('/reservation', [WebTicketController::class, 'index']);

@@ -43,23 +43,37 @@ class OrderController
         }
     }
 
+    public function checkOrderSchedule()
+    {
+        try {
+            $data = json_decode(file_get_contents('php://input'), true);
+
+            $result = $this->orderUseCase->checkOrderSchedule($data);
+
+            ResponseService::success($result, 'Success');
+        } catch (\Exception $e) {
+            ResponseService::error($e->getMessage());
+        }
+    }
+
     public function store()
     {
         try {
             $data = json_decode(file_get_contents('php://input'), true);
 
             $order = new Order();
-            $order->userId = $data['user_id'];
-            $order->trainId = $data['train_id'];
-            $order->seatId = $data['seat_id'];
-            $order->adultPassenger = $data['adult_passenger'];
-            $order->childPassenger = $data['child_passenger'];
-            $order->totalAmount = $data['total_amount'];
+            $order->userId = (int)$data['user_id'];
+            $order->trainId = (int)$data['train_id'];
+            $order->seats = $data['seats'];
+            $order->adultPassenger = (int)$data['adult_passenger'];
+            $order->childPassenger = (int)$data['child_passenger'];
+            $order->dateReservation = $data['date_reservation'];
+            $order->totalAmount = (float)$data['total_amount'];
             $order->status = $data['status'] ?? 'pending';
 
-            $this->orderUseCase->createOrder($order);
+            $result = $this->orderUseCase->createOrder($order);
 
-            ResponseService::created();
+            ResponseService::created(['order_id' => $result]);
         } catch (\Exception $e) {
             ResponseService::error($e->getMessage());
         }
@@ -77,9 +91,10 @@ class OrderController
 
             $order->userId = $data['user_id'] ?? $order->userId;
             $order->trainId = $data['train_id'] ?? $order->trainId;
-            $order->seatId = $data['seat_id'] ?? $order->seatId;
+            $order->seats = $data['seats'] ?? $order->seats;
             $order->adultPassenger = $data['adult_passenger'] ?? $order->adultPassenger;
             $order->childPassenger = $data['child_assenger'] ?? $order->childPassenger;
+            $order->dateReservation = $data['date_reservation'] ?? $order->dateReservation;
             $order->totalAmount = $data['total_amount'] ?? $order->totalAmount;
             $order->status = $data['status'] ?? $order->status;
 

@@ -70,7 +70,7 @@ class UserRepositoryImpl implements UserRepositoryInterface
     public function save(User $user): bool
     {
         $sql = 'INSERT INTO users (id_number, name, address, username, phone_number, email, password, role) 
-                VALUES (?, ?, ?, ?, ?, ?)';
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([
             $user->idNumber,

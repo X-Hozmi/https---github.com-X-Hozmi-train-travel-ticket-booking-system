@@ -24,7 +24,17 @@ class OrderUseCase
         return $this->orderRepository->findById($id);
     }
 
-    public function createOrder(Order $order): bool
+    public function checkOrderSchedule(array $data): array
+    {
+        return $this->orderRepository->find($data);
+    }
+
+    public function getOrderToPrint(int $id): array
+    {
+        return $this->orderRepository->findToPrint($id);
+    }
+
+    public function createOrder(Order $order): ?int
     {
         return $this->orderRepository->save($order);
     }

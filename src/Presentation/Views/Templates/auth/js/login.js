@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('refresh_token', data.data.refresh_token);
             localStorage.setItem('user', JSON.stringify(data.data.user));
 
-            window.location.href = DASHBOARD_PAGE;
+            window.location.href = '/';
         })
         .catch(error => {
             errorDiv.textContent = error.message || 'An unexpected error occurred';

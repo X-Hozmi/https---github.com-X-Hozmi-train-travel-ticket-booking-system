@@ -1,0 +1,71 @@
+.cinema-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.cinema-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 600px;
+}
+
+.seat-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.seat-label {
+    font-weight: bold;
+    margin-right: 15px;
+    font-size: 16px;
+}
+
+.seat {
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+    border: 2px solid #3498db;
+    background-color: #e6f2ff;
+}
+
+.seat:hover:not(.booked) {
+    background-color: #3498db;
+    color: #fff;
+    transform: scale(1.1);
+}
+
+.seat.selected {
+    background-color: #40bf2a;
+    color: #fff;
+    border-color: #2f8221;
+    transform: scale(1);
+}
+
+.seat.booked {
+    background-color: #95a5a6;
+    color: #fff;
+    cursor: not-allowed;
+    border-color: #7f8c8d;
+}
+
+.selected-seats {
+    width: 100%;
+    max-width: 600px;
+    margin-top: 20px;
+    padding: 10px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    text-align: center;
+}

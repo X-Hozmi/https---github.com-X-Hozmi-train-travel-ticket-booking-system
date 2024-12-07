@@ -28,6 +28,9 @@
                             <span class="date-title">Data Pemesanan</span>
                         </div>
                         <div class="card-body">
+                            <input type="hidden" id="id_train" name="id_train" value="0">
+                            <input type="hidden" id="id_user" name="id_user" value="0">
+                            <input type="hidden" id="totalPrice" name="totalPrice" value="0">
                             <!-- Form kiri (col-5) -->
                             <div class="form-control col-5">
                                 <label for="title">Title</label>
@@ -74,7 +77,7 @@
                     </div>
 
                     <div class="seat-grid" style="display: flex; justify-content: center;">
-                        <?php include("src/Presentation/Views/Templates/select_seat/select_seat.php") ?>
+                        <?php include('src/Presentation/Views/Templates/select_seat/select_seat.php') ?>
                     </div>
                 </div>
 
@@ -90,11 +93,6 @@
                         </div>
                         <?php include('src/Presentation/Views/Components/divider.php') ?>
                         <span class="total-passanger">1 DEWASA</span>
-                        <div class="passanger">
-                            <div class="passanger-info">
-                                <span class="seat-info">LUX-1 , 2B</span>
-                            </div>
-                        </div>
                         <div class="train-destination">
                             <table class="train-table">
                                 <tr>
@@ -123,12 +121,13 @@
                         </div>
                     </div>
                 </div>
-                
+
             </div>
         </div>
     </div>
 
     <script src="src/Presentation/Views/Templates/reservation/js/ticket.js"></script>
+    <script src="src/Presentation/Views/Templates/reservation/js/order.js"></script>
 </body>
 
 </html>

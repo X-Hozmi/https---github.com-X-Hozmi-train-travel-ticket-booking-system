@@ -354,3 +354,17 @@ select:not(:focus), input:not(:focus) {
     font-size: 14px;
     font-weight: bold;
 }
+
+.process .print-button {
+    margin-left: 10px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.process .print-button:hover {
+    background-color: #45a049;
+}

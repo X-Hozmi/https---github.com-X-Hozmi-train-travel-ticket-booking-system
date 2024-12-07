@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Train Ticket - {{ train_name }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Ubuntu', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+        }
+        .ticket-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .ticket-header {
+            background-color: #F28724;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .ticket-header img {
+            max-width: 80px;
+            height: auto;
+        }
+        .ticket-header-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            font-style: italic;
+        }
+        .ticket-body {
+            padding: 20px;
+        }
+        .ticket-section {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .ticket-section:last-of-type {
+            border-bottom: none;
+        }
+        .ticket-column {
+            flex: 1;
+        }
+        .ticket-label {
+            font-weight: bold;
+            color: #666;
+            margin-bottom: 5px;
+            display: block;
+        }
+        .ticket-value {
+            font-size: 1.1em;
+            color: #333;
+        }
+        .ticket-seat {
+            text-align: center;
+            background-color: #F28724;
+            color: white;
+            padding: 15px;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .ticket-footer {
+            background-color: #F28724;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 0.9em;
+        }
+        @media print {
+            .ticket-container {
+                box-shadow: none;
+                margin: 0;
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="ticket-container">
+        <div class="ticket-header">
+            <img src="src/Presentation/Assets/img/banisaleh-logo.jpeg" alt="Logo">
+            <div class="ticket-header-title">TRAIN TICKET</div>
+        </div>
+        <div class="ticket-body">
+            <div class="ticket-section">
+                <div class="ticket-column">
+                    <span class="ticket-label">Passenger Name</span>
+                    <span class="ticket-value">{{ passenger_name }}</span>
+                </div>
+                <div class="ticket-column">
+                    <span class="ticket-label">Booking Code</span>
+                    <span class="ticket-value">{{ booking_code }}</span>
+                </div>
+            </div>
+            <div class="ticket-section">
+                <div class="ticket-column">
+                    <span class="ticket-label">Train Name</span>
+                    <span class="ticket-value">{{ train_name }} ({{ train_class }})</span>
+                </div>
+                <div class="ticket-column">
+                    <span class="ticket-label">ID Number</span>
+                    <span class="ticket-value">{{ id_number }}</span>
+                </div>
+            </div>
+            <div class="ticket-section">
+                <div class="ticket-column">
+                    <span class="ticket-label">From</span>
+                    <span class="ticket-value">{{ arrival_station }}</span>
+                </div>
+                <div class="ticket-column">
+                    <span class="ticket-label">To</span>
+                    <span class="ticket-value">{{ departure_station }}</span>
+                </div>
+            </div>
+            <div class="ticket-section">
+                <div class="ticket-column">
+                    <span class="ticket-label">Date</span>
+                    <span class="ticket-value">{{ reservation_date }}</span>
+                </div>
+                <div class="ticket-column">
+                    <span class="ticket-label">Passengers</span>
+                    <span class="ticket-value">{{ total_passengers }}</span>
+                </div>
+            </div>
+            <div class="ticket-seat">
+                Seat Number: {{ seats }}
+            </div>
+        </div>
+        <div class="ticket-footer">
+            © 2024 Bani Saleh University. Train Ticket System.
+        </div>
+    </div>
+</body>
+</html>

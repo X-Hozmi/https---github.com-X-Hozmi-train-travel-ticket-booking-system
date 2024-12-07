@@ -9,7 +9,7 @@ class User
     public string $name;
     public string $address;
     public ?string $username;
-    public ?int $phoneNumber;
+    public ?string $phoneNumber;
     public string $email;
     public string $password;
     public ?string $role;

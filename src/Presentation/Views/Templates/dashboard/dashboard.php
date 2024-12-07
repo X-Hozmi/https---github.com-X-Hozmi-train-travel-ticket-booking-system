@@ -25,36 +25,30 @@
                         <span class="title">Pemesanan Tiket</span>
                         <span class="date-title">1 Desember 2024</span>
                     </div>
-                    <form>
-                        <div class="card-body">
-                            <!-- Form inputs -->
-                            <div class="form-control half">
-                                <label for="source">Stasiun Asal</label>
-                                <input type="text" id="source" class="input-field" required>
-                            </div>
-                            <div class="form-control half">
-                                <label for="destination">Stasiun Tujuan</label>
-                                <input type="text" id="destination" class="input-field" required>
-                            </div>
-                            <div class="form-control third">
-                                <label for="departure_date">Tanggal Keberangkatan</label>
-                                <input type="date" id="departure_date" class="input-field" required>
-                            </div>
-                            <div class="form-control third">
-                                <label for="adults">Dewasa</label>
-                                <input type="number" id="adults" class="input-field" min="0" required>
-                            </div>
-                            <div class="form-control half">
-                                <label for="infants">Bayi kurang dari tiga tahun</label>
-                                <input type="number" id="infants" class="input-field" min="0">
-                            </div>
+                    <div class="card-body">
+                        <!-- Form inputs -->
+                        <div class="form-control half">
+                            <label for="source">Stasiun Asal</label>
+                            <input type="text" id="source" class="input-field" required>
                         </div>
-                    </form>
-                    <button type="submit" class="search-button">Cari tiket</button>
-                </div>
-                <div class="destination">
-                    <span class="station">BEKASI > SOLO BALAPAN</span>
-                    <span class="date-ticket">20 Desember 2024</span>
+                        <div class="form-control half">
+                            <label for="destination">Stasiun Tujuan</label>
+                            <input type="text" id="destination" class="input-field" required>
+                        </div>
+                        <div class="form-control third">
+                            <label for="departure_date">Tanggal Keberangkatan</label>
+                            <input type="date" id="departure_date" class="input-field" required>
+                        </div>
+                        <div class="form-control third">
+                            <label for="adults">Dewasa</label>
+                            <input type="number" id="adults" class="input-field" min="0" required>
+                        </div>
+                        <div class="form-control half">
+                            <label for="infants">Bayi kurang dari tiga tahun</label>
+                            <input type="number" id="infants" class="input-field" min="0">
+                        </div>
+                    </div>
+                    <button type="button" class="search-button">Cari tiket</button>
                 </div>
 
                 <div class="ticket-container">
@@ -126,10 +120,9 @@
         </div>
     </div>
 
-    <!-- <script src="src/Presentation/Views/Templates/dashboard/js/dashboard.js"></script> -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const form = document.querySelector('form');
+            const searchButton = document.querySelector('.search-button');
             const sourceInput = document.getElementById('source');
             const destinationInput = document.getElementById('destination');
             const departureDateInput = document.getElementById('departure_date');
@@ -137,15 +130,79 @@
             const infantsInput = document.getElementById('infants');
 
             const ticketContainer = document.querySelector('.ticket-container');
-            const stationElement = document.querySelector('.station');
-            const dateTicketElement = document.querySelector('.date-ticket');
 
             ticketContainer.style.display = 'none';
 
-            // New function to handle ticket selection
+            function validateInputs() {
+                let isValid = true;
+                const requiredInputs = [{
+                        element: sourceInput,
+                        message: 'Stasiun Asal tidak boleh kosong.'
+                    },
+                    {
+                        element: destinationInput,
+                        message: 'Stasiun Tujuan tidak boleh kosong.'
+                    },
+                    {
+                        element: departureDateInput,
+                        message: 'Tanggal Keberangkatan tidak boleh kosong.'
+                    },
+                    {
+                        element: adultsInput,
+                        message: 'Jumlah Dewasa tidak boleh kosong.'
+                    }
+                ];
+
+                const existingErrors = document.querySelectorAll('.error-message');
+                existingErrors.forEach(error => error.remove());
+
+                requiredInputs.forEach(input => {
+                    if (!input.element.value.trim()) {
+                        const errorDiv = document.createElement('div');
+                        errorDiv.textContent = input.message;
+                        errorDiv.style.color = 'red';
+                        errorDiv.style.marginTop = '5px';
+                        errorDiv.classList.add('error-message');
+                        input.element.insertAdjacentElement('afterend', errorDiv);
+                        isValid = false;
+                    }
+                });
+
+                return isValid;
+            }
+
+            function validateUserAuthentication() {
+                const accessToken = localStorage.getItem('access_token');
+                const refreshToken = localStorage.getItem('refresh_token');
+                const user = localStorage.getItem('user');
+
+                return !!(accessToken && refreshToken && user);
+            }
+
+            function showLoginAlert() {
+                Swal.fire({
+                    title: 'Login Required',
+                    text: 'Please login to continue with your ticket reservation.',
+                    icon: 'warning',
+                    confirmButtonText: 'Go to Login',
+                    confirmButtonColor: '#3085d6',
+                    showCancelButton: true,
+                    cancelButtonText: 'Cancel',
+                    cancelButtonColor: '#d33'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '/login';
+                    }
+                });
+            }
+
             function handleTicketSelection(ticket, trainData) {
                 ticket.addEventListener('click', () => {
-                    // Extract all relevant information from the selected ticket
+                    if (!validateUserAuthentication()) {
+                        showLoginAlert();
+                        return;
+                    }
+
                     const ticketInfo = {
                         trainName: trainData.name,
                         trainId: trainData.id,
@@ -170,17 +227,12 @@
                 });
             }
 
-            form.addEventListener('submit', function(e) {
+            searchButton.addEventListener('click', function(e) {
                 e.preventDefault();
-                const errorDiv = document.createElement('div');
-                errorDiv.style.color = 'red';
-                errorDiv.style.textAlign = 'center';
-                errorDiv.style.marginBottom = '10px';
 
-                const existingError = document.querySelector('.error-message');
-                if (existingError) existingError.remove();
-
-                // Existing validation checks...
+                if (!validateInputs()) {
+                    return;
+                }
 
                 const formData = {
                     source: sourceInput.value,
@@ -208,13 +260,6 @@
 
                             ticketContainer.style.display = 'block';
 
-                            stationElement.textContent = `${data.data.route.source} > ${data.data.route.destination}`;
-                            dateTicketElement.textContent = new Date(departureDateInput.value).toLocaleDateString('id-ID', {
-                                day: '2-digit',
-                                month: 'long',
-                                year: 'numeric'
-                            });
-
                             const ticketSection = document.querySelector('.ticket-container');
                             ticketSection.innerHTML = `
                     <div class="ticket-header">
@@ -235,14 +280,12 @@
                                 const ticketsDiv = document.createElement('div');
                                 ticketsDiv.classList.add('tickets');
 
-                                // Improve duration handling
                                 const calculateDuration = (arrival, departure) => {
                                     const [arriveHour, arriveMin] = arrival.substring(0, 5).split(':').map(Number);
                                     const [departHour, departMin] = departure.substring(0, 5).split(':').map(Number);
 
                                     let totalMinutes = (arriveHour * 60 + arriveMin) - (departHour * 60 + departMin);
 
-                                    // Handle crossing midnight
                                     if (totalMinutes < 0) {
                                         totalMinutes += 24 * 60;
                                     }
@@ -305,7 +348,6 @@
 
                                 ticketSection.appendChild(ticketsDiv);
 
-                                // Add click event listener to the ticket div
                                 handleTicketSelection(ticketsDiv, train);
                             });
                         } else {
@@ -315,9 +357,7 @@
                     .catch(error => {
                         ticketContainer.style.display = 'none';
 
-                        errorDiv.textContent = error.message;
-                        errorDiv.classList.add('error-message');
-                        this.insertBefore(errorDiv, this.firstChild);
+                        alert(error.message);
                     });
             });
         });

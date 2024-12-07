@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('signup-form');
+    const registerButton = document.querySelector('.register-button');
 
     const validators = {
         name: (value) => value.trim().length > 0,
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const value = input.value.trim();
         const validator = validators[input.name];
         const errorSpan = input.nextElementSibling || document.createElement('span');
-        
+
         if (!validator(value)) {
             input.classList.add('error-input');
             errorSpan.textContent = errorMessages[input.name];
@@ -45,14 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    form.querySelectorAll('input').forEach(input => {
-        input.addEventListener('blur', () => validateField(input));
-    });
-
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-
-        const inputs = form.querySelectorAll('input');
+    function validateInputs() {
+        const inputs = document.querySelectorAll('input');
         let isValid = true;
 
         inputs.forEach(input => {
@@ -61,10 +55,23 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        if (isValid) {
-            const formData = Object.fromEntries(new FormData(form));
-            
-            fetch(REGISTER_URL, {
+        return isValid;
+    }
+
+    registerButton.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        if (!validateInputs()) {
+            return;
+        }
+
+        const inputs = document.querySelectorAll('.content-container .card-body input');
+        const formData = {};
+        inputs.forEach(input => {
+            formData[input.name] = input.value.trim();
+        });
+
+        fetch(REGISTER_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -83,8 +90,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const successMessage = document.createElement('div');
                 successMessage.textContent = 'Registration successful! Redirecting...';
                 successMessage.style.color = 'green';
-                successMessage.classList.add('error-message');
-                form.insertBefore(successMessage, form.firstChild);
+                successMessage.classList.add('success-message');
+                document.querySelector('.content-container .card-body').insertBefore(successMessage, document.querySelector('.content-container .card-body').firstChild);
 
                 setTimeout(() => {
                     window.location.href = LOGIN_PAGE;
@@ -92,11 +99,15 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .catch(error => {
                 const errorDiv = document.createElement('div');
-                errorDiv.textContent = error.message || 'An unexpected error occurred';
+                errorDiv.textContent = 'An unexpected error occurred';
                 errorDiv.style.color = 'red';
                 errorDiv.classList.add('error-message');
-                form.insertBefore(errorDiv, form.firstChild);
+                document.querySelector('.content-container .card-body').insertBefore(errorDiv, document.querySelector('.content-container .card-body').firstChild);
             });
-        }
+    });
+
+
+    document.querySelectorAll('input').forEach(input => {
+        input.addEventListener('blur', () => validateField(input));
     });
 });
